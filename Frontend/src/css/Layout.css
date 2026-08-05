@@ -1,0 +1,140 @@
+/* ================= HEADER ================= */
+
+.portal-header {
+    position: relative;
+    background: linear-gradient(135deg, #0f4c81, #1e88e5);
+    color: white;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(0,0,0,.25);
+}
+
+.header-overlay{
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at top right,
+        rgba(255,255,255,.15),
+        transparent 45%);
+}
+
+.header-content{
+    position:relative;
+    z-index:2;
+    max-width:1400px;
+    margin:auto;
+    padding:18px 35px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.logo{
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:white;
+    padding:6px;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+.title-section h1{
+    margin:0;
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.title-section h3{
+    margin:6px 0;
+    font-size:18px;
+    font-weight:500;
+    opacity:.95;
+}
+
+.title-section p{
+    margin:0;
+    font-size:14px;
+    letter-spacing:1px;
+    color:#dfefff;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.counter-card{
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(12px);
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.25);
+}
+
+.counter-card span{
+    display:block;
+    font-size:13px;
+    opacity:.9;
+}
+
+.counter-card strong{
+    display:block;
+    font-size:22px;
+    margin-top:4px;
+}
+
+.search-box{
+    width:240px;
+    padding:11px 16px;
+
+    border:none;
+    border-radius:30px;
+
+    outline:none;
+
+    background:white;
+
+    font-size:15px;
+
+    transition:.3s;
+}
+
+.search-box:focus{
+    width:280px;
+    box-shadow:0 0 12px rgba(255,255,255,.5);
+}
+
+@media(max-width:768px){
+
+.header-content{
+    flex-direction:column;
+    gap:20px;
+    text-align:center;
+}
+
+.header-left{
+    flex-direction:column;
+}
+
+.header-right{
+    flex-direction:column;
+    width:100%;
+}
+
+.search-box{
+    width:100%;
+}
+}

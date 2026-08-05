@@ -1,0 +1,88 @@
+/* ===========================
+   Modern Footer
+=========================== */
+
+.portal-footer {
+    background: linear-gradient(90deg, #0f172a, #1e3a8a);
+    color: #ffffff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    padding: 18px 40px;
+
+    box-shadow: 0 -5px 20px rgba(0,0,0,.15);
+
+    border-top: 3px solid #38bdf8;
+}
+
+/* Left */
+
+.footer-social {
+    display: flex;
+    gap: 12px;
+}
+
+.footer-social span {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.12);
+
+    cursor: pointer;
+
+    transition: all .3s ease;
+}
+
+.footer-social span:hover {
+    background: #38bdf8;
+    transform: translateY(-4px) scale(1.08);
+}
+
+/* Center */
+
+.footer-center {
+    text-align: center;
+    font-size: 14px;
+    color: #dbeafe;
+    line-height: 1.6;
+}
+
+/* Right */
+
+.footer-right {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+.footer-right::before {
+    content: " ";
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .portal-footer {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 25px 20px;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+}
