@@ -91,7 +91,7 @@ application.office_id;
 // =====================================================
 // 2. Find Transition
 // =====================================================
-
+console.log("Finding transition for workflowId:", workflowId, "currentStateId:", currentStateId, "actionId:", data.actionId);
 
 const transitionResult =
 await client.query(
@@ -144,7 +144,7 @@ transition.to_state_id;
 // =====================================================
 // 3. Find Next Role
 // =====================================================
-
+console.log("Finding next role for workflowId:", workflowId, "nextStateId:", nextStateId);
 
 const nextRoleResult =
 await client.query(
@@ -181,7 +181,7 @@ throw new Error(
 const nextRoleId =
 nextRoleResult.rows[0].role_id;
 
-
+console.log("Finding next role for workflowId:", workflowId, "nextRoleId:", nextRoleId);
 
 // =====================================================
 // 4. Find Officer
@@ -326,7 +326,17 @@ WHERE application_id=$2
 ]
 );
 
-
+  await client.query(
+            `
+            UPDATE applications_housing
+            SET current_state_id = $1
+            WHERE id = $2
+            `,
+            [
+                nextStateId,
+                data.applicationId
+            ]
+        );
 
 
 // =====================================================
