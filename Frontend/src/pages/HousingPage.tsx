@@ -2,54 +2,61 @@ import { useState } from "react";
 import ApplicationForm from "./ApplicationForm";
 import DraftList from "./DraftList";
 import SubmittedList from "./SubmittedList";
-import "../css/HousingPage.css";
 
-function HousingPage() {
 
-    const [tab, setTab] = useState("new");
+function HousingPage(){
 
-    return (
-        <div className="housing-container">
+const [tab,setTab]=useState("new");
 
-            <h2>Housing Assistance</h2>
 
-            <div className="tabs">
+return (
 
-                <button
-                    className={tab === "new" ? "active" : ""}
-                    onClick={() => setTab("new")}
-                >
-                    New Application
-                </button>
+<div>
 
-                <button
-                    className={tab === "draft" ? "active" : ""}
-                    onClick={() => setTab("draft")}
-                >
-                    Drafts
-                </button>
+<h2>Housing Assistance</h2>
 
-                <button
-                    className={tab === "submitted" ? "active" : ""}
-                    onClick={() => setTab("submitted")}
-                >
-                    Submitted
-                </button>
 
-            </div>
+<button onClick={()=>setTab("new")}>
+New Application
+</button>
 
-            <div className="tab-content">
 
-                {tab === "new" && <ApplicationForm />}
+<button onClick={()=>setTab("draft")}>
+Drafts
+</button>
 
-                {tab === "draft" && <DraftList />}
 
-                {tab === "submitted" && <SubmittedList />}
+<button onClick={()=>setTab("submitted")}>
+Submitted
+</button>
 
-            </div>
 
-        </div>
-    );
+<hr/>
+
+
+{
+tab==="new" &&
+<ApplicationForm/>
 }
+
+
+{
+tab==="draft" &&
+<DraftList workflowId={1}/>
+}
+
+
+{
+tab==="submitted" &&
+<SubmittedList workflowId={1}/>
+}
+
+
+</div>
+
+);
+
+}
+
 
 export default HousingPage;

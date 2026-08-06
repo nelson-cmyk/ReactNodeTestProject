@@ -31,7 +31,7 @@ function DraftList({ workflowId = 1 }: Props) {
                 }
 
             );
-
+ console.log("Draft API Response:", response.data);
             setDrafts(response.data);
 
         }

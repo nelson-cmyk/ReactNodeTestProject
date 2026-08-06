@@ -57,7 +57,10 @@ element={<EServices/>}
 path="/services/housing"
 element={<HousingPage/>}
 />
-
+<Route
+    path="/application/edit/:applicationId"
+    element={<ApplicationForm />}
+/>
 <Route
 path="/services/boiler"
 element={<BoilerPage/>}

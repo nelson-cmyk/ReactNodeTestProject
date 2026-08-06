@@ -554,29 +554,34 @@ console.log(files);
             applicationId = draftResult.rows[0].application_id;
 
             await client.query(
-                `
-                UPDATE applications_housing
-                SET
-                    applicant_name = $1,
-                    mobile_number = $2,
-                    address = $3,
-                    house_type = $4,
-                    annual_income = $5,
-                    income_certificate = $6,
-                    address_proof = $7
-                WHERE id = $8
-                `,
-                [
-                    applicant_name,
-                    mobile_number,
-                    address,
-                    house_type,
-                    annual_income,
-                    incomeCertificate,
-                    addressProof,
-                    applicationId
-                ]
-            );
+`
+UPDATE applications_housing
+SET
+    applicant_name=$1,
+    mobile_number=$2,
+    address=$3,
+    house_type=$4,
+    annual_income=$5,
+
+    income_certificate =
+    COALESCE($6,income_certificate),
+
+    address_proof =
+    COALESCE($7,address_proof)
+
+WHERE id=$8
+`,
+[
+    applicant_name,
+    mobile_number,
+    address,
+    house_type,
+    annual_income,
+    incomeCertificate,
+    addressProof,
+    applicationId
+]
+);
 
             await client.query(
                 `
