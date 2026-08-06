@@ -326,17 +326,7 @@ WHERE application_id=$2
 ]
 );
 
-  await client.query(
-            `
-            UPDATE applications_housing
-            SET current_state_id = $1
-            WHERE id = $2
-            `,
-            [
-                nextStateId,
-                data.applicationId
-            ]
-        );
+ 
 
 
 // =====================================================

@@ -15,7 +15,9 @@ import ApplicationForm from "./pages/ApplicationForm";
 import ApplicationPending from "./pages/ApplicationPending";
 import WorkflowApplication from "./pages/ApplicationWorkflow";
 
-
+import EServices from "./pages/EServices";
+    import HousingPage from "./pages/HousingPage";
+ import BoilerPage from "./pages/HousingPage";
 
 function App() {
   return (
@@ -48,9 +50,18 @@ function App() {
             />           
 
             <Route
-          path="/apply"
-          element={<ApplicationForm/>}
-        />
+path="/services"
+element={<EServices/>}
+/>
+<Route
+path="/services/housing"
+element={<HousingPage/>}
+/>
+
+<Route
+path="/services/boiler"
+element={<BoilerPage/>}
+/>
          <Route
           path="/task"
           element={<ApplicationPending/>}

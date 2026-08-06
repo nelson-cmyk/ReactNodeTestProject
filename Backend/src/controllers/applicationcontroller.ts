@@ -211,11 +211,11 @@ export const createApplication = async (
                 house_type,
                 annual_income,
                 income_certificate,
-                address_proof,
-                current_state_id
+                address_proof
+                
             )
             VALUES
-            ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+            ($1,$2,$3,$4,$5,$6,$7,$8)
             `,
             [
                 applicationId,
@@ -225,8 +225,8 @@ export const createApplication = async (
                 house_type,
                 annual_income,
                 incomeCertificate,
-                addressProof,
-                draftStateId
+                addressProof
+                
             ]);
 
         }
@@ -426,17 +426,7 @@ const assignedTo =
             ]
         );
 
-        await client.query(
-            `
-            UPDATE applications_housing
-            SET current_state_id = $1
-            WHERE id = $2
-            `,
-            [
-                nextStateId,
-                applicationId
-            ]
-        );
+        
 
         // =====================================================
         // 10. Commit Transaction
@@ -647,12 +637,12 @@ console.log(files);
                     house_type,
                     annual_income,
                     income_certificate,
-                    address_proof,
-                    current_state_id
+                    address_proof
+                    
                 )
                 VALUES
                 (
-                    $1,$2,$3,$4,$5,$6,$7,$8,$9
+                    $1,$2,$3,$4,$5,$6,$7,$8
                 )
                 `,
                 [
@@ -664,7 +654,7 @@ console.log(files);
                     annual_income,
                     incomeCertificate,
                     addressProof,
-                    draftStateId
+                    
                 ]
             );
 

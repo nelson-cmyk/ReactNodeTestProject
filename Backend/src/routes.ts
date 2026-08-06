@@ -19,6 +19,11 @@ import {
 performAction
 }
 from "./controllers/applicationworkflowcontroller";
+import { getServices } from "./controllers/servicecontroller";
+import {
+    getDraftApplications,
+    getSubmittedApplications
+} from "./controllers/servicecontroller";
 
 
 const router = express.Router();
@@ -115,5 +120,25 @@ router.get(
     "/dashboard",
     verifyToken,
     getDashboardStats
+);
+
+//service route
+router.get(
+    "/services",
+    verifyToken,
+    getServices
+);
+
+
+router.get(
+    "/applications/drafts/:workflowId",
+    verifyToken,
+    getDraftApplications
+);
+
+router.get(
+    "/applications/submitted/:workflowId",
+    verifyToken,
+    getSubmittedApplications
 );
 export default router;

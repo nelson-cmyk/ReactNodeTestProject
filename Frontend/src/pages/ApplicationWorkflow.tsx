@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 function WorkflowApplication() {
 
     const { applicationId } = useParams();
-
+    const navigate = useNavigate();
     const [application, setApplication] = useState<any>(null);
     const [actions, setActions] = useState<any[]>([]);
 
@@ -81,8 +81,9 @@ console.log(response.data);
             );
 console.log("Response:", response.data);
             alert(response.data.message);
-
-            loadApplication();
+// Redirect to pending tasks page
+    navigate("/task");
+            
 
         }
         catch (error: any) {
