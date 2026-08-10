@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import "../css/EServices.css";
 
 function EServices() {
 
     const [services, setServices] = useState<any[]>([]);
 
-    const navigate = useNavigate();   // ✅ inside component
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -15,7 +16,6 @@ function EServices() {
         loadServices();
 
     }, []);
-
 
 
     const loadServices = async () => {
@@ -28,22 +28,29 @@ function EServices() {
                 "http://localhost:5000/api/services",
                 {
                     headers: {
-                        Authorization:`Bearer ${token}`
+                        Authorization: `Bearer ${token}`
                     }
                 }
+            );
+
+            console.log(
+                "Services:",
+                response.data
             );
 
             setServices(response.data);
 
         }
-        catch(error){
+        catch (error) {
 
-            console.log(error);
+            console.error(
+                "Error loading services:",
+                error
+            );
 
         }
 
     };
-
 
 
     return (
@@ -55,45 +62,44 @@ function EServices() {
             </h2>
 
 
-            {
-                services.map((service:any)=>(
+            <div className="services-grid">
 
-                    <button
+                {services.map(
+                    (service: any) => (
 
-                        key={service.service_id}
+                        <button
+                            key={service.service_id}
 
-                        onClick={() =>
+                            className="service-card"
 
-                            navigate(
+                            onClick={() => {
 
-                                service.route,
-
-                                {
-                                    state:{
-                                        workflowId:
-                                        service.workflow_id
+                                navigate(
+                                    service.route,
+                                    {
+                                        state: {
+                                            workflowId:
+                                                service.workflow_id
+                                        }
                                     }
-                                }
+                                );
 
-                            )
+                            }}
+                        >
 
-                        }
+                            {service.service_name}
 
-                    >
+                        </button>
 
-                        {service.service_name}
+                    )
+                )}
 
-                    </button>
-
-                ))
-            }
-
+            </div>
 
         </div>
 
     );
 
 }
-
 
 export default EServices;

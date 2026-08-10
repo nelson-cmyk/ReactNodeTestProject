@@ -9,73 +9,94 @@ import "../css/Service.css";
 
 function HousingPage() {
 
+    const workflowId = 1;
+
     const [tab, setTab] = useState("new");
+
+    const [drafts, setDrafts] = useState<any[]>([]);
+
     const [checkingDraft, setCheckingDraft] = useState(true);
 
 
     useEffect(() => {
 
-        const checkDraft = async () => {
-
-            try {
-
-                const token = localStorage.getItem("token");
-
-                const response = await axios.get(
-                    "http://localhost:5000/api/applications/draft/1",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
-
-
-                console.log(
-                    "Housing Draft Check:",
-                    response.data
-                );
-
-
-                if (response.data.hasDraft === true) {
-
-                    setTab("draft");
-
-                } else {
-
-                    setTab("new");
-
-                }
-
-            }
-            catch (error) {
-
-                console.error(
-                    "Error checking housing draft:",
-                    error
-                );
-
-                // Default to New Application
-                setTab("new");
-
-            }
-            finally {
-
-                setCheckingDraft(false);
-
-            }
-
-        };
-
-
-        checkDraft();
+        checkDrafts();
 
     }, []);
 
 
-    /* =========================================
-       Loading
-       ========================================= */
+    const checkDrafts = async () => {
+
+        try {
+
+            const token = localStorage.getItem("token");
+
+            const response = await axios.get(
+                `http://localhost:5000/api/applications/drafts/${workflowId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+
+            const draftData =
+                Array.isArray(response.data)
+                    ? response.data
+                    : [];
+
+
+            console.log(
+                "Housing Drafts:",
+                draftData
+            );
+
+
+            setDrafts(draftData);
+
+
+            /*
+             * Draft exists
+             */
+
+            if (draftData.length > 0) {
+
+                setTab("draft");
+
+            }
+
+            /*
+             * No draft
+             */
+
+            else {
+
+                setTab("new");
+
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "Error checking drafts:",
+                error
+            );
+
+            setDrafts([]);
+
+            setTab("new");
+
+        }
+        finally {
+
+            setCheckingDraft(false);
+
+        }
+
+    };
+
 
     if (checkingDraft) {
 
@@ -83,13 +104,13 @@ function HousingPage() {
 
             <div className="service-container">
 
-                <h2>Housing Assistance</h2>
+                <h2>
+                    Housing Assistance
+                </h2>
 
                 <div className="tab-content">
 
-                    <p>
-                        Loading...
-                    </p>
+                    Loading...
 
                 </div>
 
@@ -100,22 +121,14 @@ function HousingPage() {
     }
 
 
-    /* =========================================
-       Main Page
-       ========================================= */
-
     return (
 
         <div className="service-container">
-
-            {/* Page Header */}
 
             <h2>
                 Housing Assistance
             </h2>
 
-
-            {/* Tabs */}
 
             <div className="tabs">
 
@@ -125,6 +138,7 @@ function HousingPage() {
                             ? "active"
                             : ""
                     }
+
                     onClick={() =>
                         setTab("new")
                     }
@@ -139,6 +153,7 @@ function HousingPage() {
                             ? "active"
                             : ""
                     }
+
                     onClick={() =>
                         setTab("draft")
                     }
@@ -153,6 +168,7 @@ function HousingPage() {
                             ? "active"
                             : ""
                     }
+
                     onClick={() =>
                         setTab("submitted")
                     }
@@ -162,8 +178,6 @@ function HousingPage() {
 
             </div>
 
-
-            {/* Tab Content */}
 
             <div className="tab-content">
 
@@ -177,7 +191,8 @@ function HousingPage() {
                 {tab === "draft" && (
 
                     <DraftList
-                        workflowId={1}
+                        workflowId={workflowId}
+                        drafts={drafts}
                     />
 
                 )}
@@ -186,7 +201,7 @@ function HousingPage() {
                 {tab === "submitted" && (
 
                     <SubmittedList
-                        workflowId={1}
+                        workflowId={workflowId}
                     />
 
                 )}
