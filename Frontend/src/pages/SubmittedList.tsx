@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import "../css/Tables.css";
+
 interface Props {
     workflowId?: number;
 }
@@ -9,10 +11,15 @@ interface Props {
 function SubmittedList({ workflowId = 1 }: Props) {
 
     const [applications, setApplications] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
+
         loadApplications();
-    }, []);
+
+    }, [workflowId]);
+
 
     const loadApplications = async () => {
 
@@ -32,73 +39,187 @@ function SubmittedList({ workflowId = 1 }: Props) {
 
             );
 
+            console.log(
+                "Submitted Applications:",
+                response.data
+            );
+
             setApplications(response.data);
 
         }
         catch (error) {
 
-            console.log(error);
+            console.error(
+                "Error loading submitted applications:",
+                error
+            );
+
+        }
+        finally {
+
+            setLoading(false);
 
         }
 
     };
 
-    if (applications.length === 0) {
 
-        return <h4>No Submitted Applications</h4>;
+    /* =========================================
+       Loading
+       ========================================= */
+
+    if (loading) {
+
+        return (
+            <div className="empty-state">
+                Loading submitted applications...
+            </div>
+        );
 
     }
 
-    return (
 
-        <table className="table">
+    /* =========================================
+       No Applications
+       ========================================= */
 
-            <thead>
+    if (applications.length === 0) {
 
-                <tr>
+        return (
 
-                    <th>Application No</th>
-                    <th>Status</th>
-                    <th>Current State</th>
-                    <th>Action</th>
+            <div className="common-table-wrapper">
 
-                </tr>
+                <table className="common-table">
 
-            </thead>
+                    <thead>
 
-            <tbody>
+                        <tr>
+                            <th>Application No</th>
+                            <th>Status</th>
+                            <th>Current State</th>
+                            <th>Action</th>
+                        </tr>
 
-                {
+                    </thead>
 
-                    applications.map((application: any) => (
+                    <tbody>
 
-                        <tr key={application.application_id}>
+                        <tr>
 
-                            <td>{application.application_no}</td>
-
-                            <td>{application.application_status}</td>
-
-                            <td>{application.state_name}</td>
-
-                            <td>
-
-                                <Link
-                                    to={`/workflow/application/${application.application_id}`}
-                                >
-                                    View
-                                </Link>
-
+                            <td
+                                colSpan={4}
+                                className="empty-row"
+                            >
+                                No Submitted Applications
                             </td>
 
                         </tr>
 
-                    ))
+                    </tbody>
 
-                }
+                </table>
 
-            </tbody>
+            </div>
 
-        </table>
+        );
+
+    }
+
+
+    /* =========================================
+       Application Table
+       ========================================= */
+
+    return (
+
+        <div className="common-table-wrapper">
+
+            <table className="common-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Application No
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Current State
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {applications.map(
+                        (application: any) => (
+
+                            <tr
+                                key={
+                                    application.application_id
+                                }
+                            >
+
+                                <td className="application-number">
+
+                                    {
+                                        application.application_no
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    {
+                                        application.application_status
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    {
+                                        application.state_name
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    <Link
+                                        className="table-action"
+                                        to={`/workflow/application/${application.application_id}`}
+                                    >
+                                        View
+                                    </Link>
+
+                                </td>
+
+                            </tr>
+
+                        )
+                    )}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     );
 

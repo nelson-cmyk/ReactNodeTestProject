@@ -1,0 +1,259 @@
+/* =========================================
+   Service Page - Main Container
+   ========================================= */
+
+.service-container {
+    width: 94%;
+    max-width: 1500px;
+
+    margin: 30px auto;
+
+    padding: 0;
+}
+
+
+/* =========================================
+   Page Header
+   ========================================= */
+
+.service-container h2 {
+    margin: 0 0 8px 0;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    letter-spacing: -0.4px;
+
+    color: #172033;
+}
+
+
+.service-container h2::after {
+    content: "";
+
+    display: block;
+
+    width: 55px;
+    height: 4px;
+
+    margin-top: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #0d6efd,
+        #4dabf7
+    );
+
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   Tabs Container
+   ========================================= */
+
+.tabs {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 28px;
+
+    padding: 6px;
+
+    background: #f4f7fb;
+
+    border: 1px solid #e4e9f0;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================
+   Tab Buttons
+   ========================================= */
+
+.tabs button {
+    position: relative;
+
+    min-width: 150px;
+
+    padding: 12px 22px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+/* =========================================
+   Tab Hover
+   ========================================= */
+
+.tabs button:hover {
+    color: #0d6efd;
+
+    background: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 8px rgba(13, 110, 253, 0.08);
+}
+
+
+/* =========================================
+   Active Tab
+   ========================================= */
+
+.tabs button.active {
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #0d6efd,
+        #1769d2
+    );
+
+    box-shadow:
+        0 5px 12px rgba(13, 110, 253, 0.25);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   Tab Content
+   ========================================= */
+
+.tab-content {
+    position: relative;
+
+    margin-top: 20px;
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5eaf0;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.06);
+
+    min-height: 250px;
+
+    animation: tabFade 0.25s ease;
+}
+
+
+/* =========================================
+   Content Animation
+   ========================================= */
+
+@keyframes tabFade {
+
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================
+   Button Focus
+   ========================================= */
+
+.tabs button:focus-visible {
+    outline: 3px solid rgba(13, 110, 253, 0.25);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .service-container {
+        width: 94%;
+
+        margin: 20px auto;
+    }
+
+    .service-container h2 {
+        font-size: 23px;
+    }
+
+    .tabs {
+        overflow-x: auto;
+
+        padding: 5px;
+
+        scrollbar-width: thin;
+    }
+
+    .tabs button {
+        min-width: 125px;
+
+        padding: 11px 16px;
+
+        font-size: 13px;
+    }
+
+    .tab-content {
+        padding: 18px;
+
+        border-radius: 10px;
+    }
+
+}
+
+
+/* =========================================
+   Small Mobile
+   ========================================= */
+
+@media (max-width: 480px) {
+
+    .service-container {
+        width: 96%;
+    }
+
+    .tabs button {
+        min-width: 110px;
+
+        padding: 10px 13px;
+    }
+
+    .tab-content {
+        padding: 14px;
+    }
+
+}

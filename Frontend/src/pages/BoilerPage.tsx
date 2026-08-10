@@ -1,39 +1,84 @@
 import { useState } from "react";
+
 import BoilerApplicationForm from "./BoilerApplicationForm";
 import DraftList from "./DraftList";
 import SubmittedList from "./SubmittedList";
+
+import "../css/Service.css";
 
 function BoilerPage() {
 
     const [tab, setTab] = useState("new");
 
     return (
-        <div>
+
+        <div className="service-container">
+
+            {/* =========================================
+                Page Header
+                ========================================= */}
 
             <h2>Boiler Assistance</h2>
 
-            <button onClick={() => setTab("new")}>
-                New Application
-            </button>
 
-            <button onClick={() => setTab("draft")}>
-                Drafts
-            </button>
+            {/* =========================================
+                Tabs
+                ========================================= */}
 
-            <button onClick={() => setTab("submitted")}>
-                Submitted
-            </button>
+            <div className="tabs">
 
-            <hr />
+                <button
+                    className={tab === "new" ? "active" : ""}
+                    onClick={() => setTab("new")}
+                >
+                    New Application
+                </button>
 
-            {tab === "new" && <BoilerApplicationForm />}
 
-            {tab === "draft" && <DraftList />}
+                <button
+                    className={tab === "draft" ? "active" : ""}
+                    onClick={() => setTab("draft")}
+                >
+                    Drafts
+                </button>
 
-            {tab === "submitted" && <SubmittedList />}
+
+                <button
+                    className={tab === "submitted" ? "active" : ""}
+                    onClick={() => setTab("submitted")}
+                >
+                    Submitted
+                </button>
+
+            </div>
+
+
+            {/* =========================================
+                Tab Content
+                ========================================= */}
+
+            <div className="tab-content">
+
+                {tab === "new" && (
+                    <BoilerApplicationForm />
+                )}
+
+
+                {tab === "draft" && (
+                    <DraftList workflowId={2} />
+                )}
+
+
+                {tab === "submitted" && (
+                    <SubmittedList workflowId={2} />
+                )}
+
+            </div>
 
         </div>
+
     );
+
 }
 
 export default BoilerPage;

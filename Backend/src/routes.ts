@@ -9,6 +9,7 @@ import { saveDraft } from "./controllers/applicationcontroller";
 import { getDraft } from "./controllers/applicationcontroller";
 
 
+
 import { addUser } from "./controllers/registrationcontroller";
 import { loginUser } from "./controllers/logincontroller";
 
@@ -76,7 +77,7 @@ router.post(
 );
 
 router.get(
-    "/applications/housing/draft",
+    "/applications/edit/:id",
     verifyToken,
     getDraft
 );

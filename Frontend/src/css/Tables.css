@@ -1,0 +1,168 @@
+/* =========================================
+   Common Application Table
+   ========================================= */
+
+.common-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+
+    background: #ffffff;
+
+    border: 1px solid #e5eaf0;
+    border-radius: 10px;
+
+    box-shadow:
+        0 3px 12px rgba(15, 23, 42, 0.05);
+}
+
+
+/* =========================================
+   Table
+   ========================================= */
+
+.common-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 14px;
+
+    color: #334155;
+}
+
+
+/* =========================================
+   Table Header
+   ========================================= */
+
+.common-table thead {
+    background: #f1f5f9;
+}
+
+.common-table th {
+    padding: 14px 18px;
+
+    text-align: left;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #475569;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   Table Body
+   ========================================= */
+
+.common-table td {
+    padding: 14px 18px;
+
+    border-bottom: 1px solid #eef2f7;
+
+    vertical-align: middle;
+}
+
+
+/* =========================================
+   Row Hover
+   ========================================= */
+
+.common-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.common-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+
+/* Remove border from last row */
+
+.common-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================
+   Application Number
+   ========================================= */
+
+.common-table .application-number {
+    font-weight: 600;
+
+    color: #0d6efd;
+}
+
+
+/* =========================================
+   Action Buttons
+   ========================================= */
+
+.common-table .table-action {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 7px 14px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #ffffff;
+
+    background: #0d6efd;
+
+    transition: all 0.2s ease;
+}
+
+.common-table .table-action:hover {
+    background: #0b5ed7;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 8px rgba(13, 110, 253, 0.2);
+}
+
+
+/* =========================================
+   Empty Table
+   ========================================= */
+
+.common-table .empty-row {
+    text-align: center;
+
+    padding: 35px;
+
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    .common-table {
+        min-width: 650px;
+    }
+
+    .common-table th,
+    .common-table td {
+        padding: 12px 14px;
+    }
+
+}

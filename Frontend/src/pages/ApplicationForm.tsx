@@ -74,7 +74,7 @@ console.log("Loading application:", id);
 
             const response = await axios.get(
 
-                `http://localhost:5000/api/applications/housing/${id}`,
+                `http://localhost:5000/api/applications/edit/${id}`,
 
                 {
                     headers:{
@@ -84,14 +84,22 @@ console.log("Loading application:", id);
 
             );
 
-
+console.log("id",id);
 console.log(
     "API RESPONSE:",
     response.data
+    
 );
-            const app=response.data;
+            const app=response.data.application;
 
 
+
+console.log("Application Data:", app);
+console.log("Applicant Name:", app.applicant_name);
+console.log("Mobile:", app.mobile_number);
+console.log("Address:", app.address);
+console.log("House Type:", app.house_type);
+console.log("Annual Income:", app.annual_income);
 
             setFormData({
 

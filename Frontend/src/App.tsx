@@ -17,7 +17,7 @@ import WorkflowApplication from "./pages/ApplicationWorkflow";
 
 import EServices from "./pages/EServices";
     import HousingPage from "./pages/HousingPage";
- import BoilerPage from "./pages/HousingPage";
+ import BoilerPage from "./pages/BoilerPage";
 
 function App() {
   return (
@@ -59,6 +59,10 @@ element={<HousingPage/>}
 />
 <Route
     path="/application/edit/:applicationId"
+    element={<ApplicationForm />}
+/>
+<Route
+    path="/applications/edit/:applicationId"
     element={<ApplicationForm />}
 />
 <Route

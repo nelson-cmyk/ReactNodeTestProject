@@ -1,62 +1,202 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import ApplicationForm from "./ApplicationForm";
 import DraftList from "./DraftList";
 import SubmittedList from "./SubmittedList";
 
+import "../css/Service.css";
 
-function HousingPage(){
+function HousingPage() {
 
-const [tab,setTab]=useState("new");
-
-
-return (
-
-<div>
-
-<h2>Housing Assistance</h2>
+    const [tab, setTab] = useState("new");
+    const [checkingDraft, setCheckingDraft] = useState(true);
 
 
-<button onClick={()=>setTab("new")}>
-New Application
-</button>
+    useEffect(() => {
+
+        const checkDraft = async () => {
+
+            try {
+
+                const token = localStorage.getItem("token");
+
+                const response = await axios.get(
+                    "http://localhost:5000/api/applications/draft/1",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
 
 
-<button onClick={()=>setTab("draft")}>
-Drafts
-</button>
+                console.log(
+                    "Housing Draft Check:",
+                    response.data
+                );
 
 
-<button onClick={()=>setTab("submitted")}>
-Submitted
-</button>
+                if (response.data.hasDraft === true) {
+
+                    setTab("draft");
+
+                } else {
+
+                    setTab("new");
+
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Error checking housing draft:",
+                    error
+                );
+
+                // Default to New Application
+                setTab("new");
+
+            }
+            finally {
+
+                setCheckingDraft(false);
+
+            }
+
+        };
 
 
-<hr/>
+        checkDraft();
+
+    }, []);
 
 
-{
-tab==="new" &&
-<ApplicationForm/>
+    /* =========================================
+       Loading
+       ========================================= */
+
+    if (checkingDraft) {
+
+        return (
+
+            <div className="service-container">
+
+                <h2>Housing Assistance</h2>
+
+                <div className="tab-content">
+
+                    <p>
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    /* =========================================
+       Main Page
+       ========================================= */
+
+    return (
+
+        <div className="service-container">
+
+            {/* Page Header */}
+
+            <h2>
+                Housing Assistance
+            </h2>
+
+
+            {/* Tabs */}
+
+            <div className="tabs">
+
+                <button
+                    className={
+                        tab === "new"
+                            ? "active"
+                            : ""
+                    }
+                    onClick={() =>
+                        setTab("new")
+                    }
+                >
+                    New Application
+                </button>
+
+
+                <button
+                    className={
+                        tab === "draft"
+                            ? "active"
+                            : ""
+                    }
+                    onClick={() =>
+                        setTab("draft")
+                    }
+                >
+                    Drafts
+                </button>
+
+
+                <button
+                    className={
+                        tab === "submitted"
+                            ? "active"
+                            : ""
+                    }
+                    onClick={() =>
+                        setTab("submitted")
+                    }
+                >
+                    Submitted
+                </button>
+
+            </div>
+
+
+            {/* Tab Content */}
+
+            <div className="tab-content">
+
+                {tab === "new" && (
+
+                    <ApplicationForm />
+
+                )}
+
+
+                {tab === "draft" && (
+
+                    <DraftList
+                        workflowId={1}
+                    />
+
+                )}
+
+
+                {tab === "submitted" && (
+
+                    <SubmittedList
+                        workflowId={1}
+                    />
+
+                )}
+
+            </div>
+
+        </div>
+
+    );
+
 }
-
-
-{
-tab==="draft" &&
-<DraftList workflowId={1}/>
-}
-
-
-{
-tab==="submitted" &&
-<SubmittedList workflowId={1}/>
-}
-
-
-</div>
-
-);
-
-}
-
 
 export default HousingPage;
