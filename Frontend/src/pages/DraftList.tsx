@@ -25,7 +25,7 @@ function DraftList({ workflowId }: Props) {
     const loadDrafts = async () => {
 
         try {
-
+            
             const token = localStorage.getItem("token");
 
             const response = await axios.get(

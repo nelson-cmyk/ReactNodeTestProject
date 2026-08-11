@@ -5,27 +5,25 @@ import { verifyToken } from "./middleware/authmiddleware";
 import upload from "./middleware/multer"; 
 
 import { createApplication } from "./controllers/applicationcontroller";
-import { saveDraft } from "./controllers/applicationcontroller";
-import { getDraft } from "./controllers/applicationcontroller";
-
+import { saveDrafthousingbyId } from "./controllers/applicationcontroller";
+import { getDrafthousingbyId } from "./controllers/applicationcontroller";
 
 
 import { addUser } from "./controllers/registrationcontroller";
 import { loginUser } from "./controllers/logincontroller";
 
-import { getApplication, getPendingApplications } from "./controllers/applicationworkflowcontroller";
+import { getApplicationbyId, getPendingApplications } from "./controllers/applicationworkflowcontroller";
 import { getDashboardStats } from "./controllers/dashboardcontroller";
 
-import {
-performAction
-}
-from "./controllers/applicationworkflowcontroller";
-import { getServices } from "./controllers/servicecontroller";
-import {
-    getDraftApplications,
-    getSubmittedApplications
-} from "./controllers/servicecontroller";
+import { performAction } from "./controllers/applicationworkflowcontroller";
 
+
+import { getServices } from "./controllers/servicecontroller";
+import { getDraftApplications, getSubmittedApplications } from "./controllers/servicecontroller";
+
+import { createboilerApplication } from "./controllers/boilercontroller";
+import { saveDraftboiler } from "./controllers/boilercontroller";
+import { getDraftboiler } from "./controllers/boilercontroller";
 
 const router = express.Router();
 
@@ -57,9 +55,6 @@ router.post("/login", loginUser);
 // Existing Routes
 // ===============================
 
-
-
-
 router.post(
     "/applications/draft",
      verifyToken,
@@ -73,17 +68,17 @@ router.post(
             maxCount:1
         }
     ]),
-    saveDraft
+    saveDrafthousingbyId
+);
+router.get(
+    "/applications/housing/edit/:id",
+    verifyToken,
+    getDrafthousingbyId
 );
 
-router.get(
-    "/applications/edit/:id",
-    verifyToken,
-    getDraft
-);
 
 // ===============================
-// Application Route
+//Housing Application Route
 // ===============================
 
 router.post(
@@ -112,7 +107,7 @@ router.get(
 
     verifyToken,
 
-    getApplication
+    getApplicationbyId
 
 );
 
@@ -130,7 +125,7 @@ router.get(
     getServices
 );
 
-
+//common routes
 router.get(
     "/applications/drafts/:workflowId",
     verifyToken,
@@ -141,5 +136,40 @@ router.get(
     "/applications/submitted/:workflowId",
     verifyToken,
     getSubmittedApplications
+);
+
+
+//Boiler Service Routes
+
+router.post(
+    "/applications/boiler",
+
+    verifyToken,
+
+    upload.fields([
+        {
+            name:"boiler_certificate",
+            maxCount:1
+        }
+    ]),
+
+    createboilerApplication
+);
+
+router.post(
+    "/applications/boiler/draft",
+     verifyToken,
+    upload.fields([
+        {
+            name:"boiler_certificate",
+            maxCount:1
+        }
+    ]),
+    saveDraftboiler
+);
+router.get(
+    "/applications/boiler/edit/:id",
+    verifyToken,
+    getDraftboiler
 );
 export default router;

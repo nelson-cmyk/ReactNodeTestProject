@@ -35,11 +35,23 @@ export const getDraftApplications = async (
         const workflowId = req.params.workflowId;
         const userId = req.user.id;
 
+        console.log(
+            "User ID:",
+            userId
+        );
+
+        console.log(
+            "Workflow ID:",
+            workflowId
+        );
+
+
         const result = await pool.query(
             `
             SELECT
                 application_id,
                 application_no,
+                workflow_id,
                 application_status,
                 created_at,
                 updated_at
@@ -55,15 +67,28 @@ export const getDraftApplications = async (
             ]
         );
 
-        res.json(result.rows);
+
+        console.log(
+            "Draft Applications:",
+            result.rows
+        );
+
+
+        res.json(
+            result.rows
+        );
 
     }
     catch (error) {
 
-        console.log(error);
+        console.log(
+            "Draft applications error:",
+            error
+        );
 
         res.status(500).json({
-            message: "Unable to load draft applications"
+            message:
+                "Unable to load draft applications"
         });
 
     }

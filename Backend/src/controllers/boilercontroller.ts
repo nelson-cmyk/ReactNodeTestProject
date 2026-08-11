@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import pool from "../db";
 
 
-export const createApplication = async (
+export const createboilerApplication = async (
     req: Request,
     res: Response
 ) => {
@@ -18,30 +18,26 @@ export const createApplication = async (
             applicant_name,
             mobile_number,
             address,
-            house_type,
-            annual_income
+            boiler_type,
+            boiler_capacity,
+            year_of_installation,
+            purpose
         } = req.body;
 
 
         const files: any = req.files;
 
 
-        const incomeCertificate =
-            files?.income_certificate
-                ? files.income_certificate[0].filename
-                : null;
-
-
-        const addressProof =
-            files?.address_proof
-                ? files.address_proof[0].filename
+        const boilerCertificateFilename =
+            files?.boiler_certificate
+                ? files.boiler_certificate[0].filename
                 : null;
 
 
 
         const userId = req.user.id;
 
-        const workflow_id = 1; // Housing workflow
+        const workflow_id = 2; 
 
         const draftStateId = 1;
 
@@ -126,25 +122,27 @@ export const createApplication = async (
 
             await client.query(
             `
-            UPDATE applications_housing
+            UPDATE boiler_applications
             SET
                 applicant_name=$1,
                 mobile_number=$2,
                 address=$3,
-                house_type=$4,
-                annual_income=$5,
-                income_certificate=$6,
-                address_proof=$7
-            WHERE id=$8
+                boiler_type=$4,
+                boiler_capacity=$5,
+                year_of_installation=$6,
+                purpose=$7,
+                boiler_certificate=$8
+            WHERE id=$9
             `,
             [
                 applicant_name,
                 mobile_number,
                 address,
-                house_type,
-                annual_income,
-                incomeCertificate,
-                addressProof,
+                boiler_type,
+                boiler_capacity,
+                year_of_installation,
+                purpose,
+                boilerCertificateFilename,
                 applicationId
             ]);
 
@@ -160,7 +158,7 @@ export const createApplication = async (
         {
 
             const application_no =
-                "AppHousing-" + Date.now();
+                "APPBoiler-" + Date.now();
 
 
 
@@ -202,30 +200,31 @@ export const createApplication = async (
 
             await client.query(
             `
-            INSERT INTO applications_housing
+            INSERT INTO boiler_applications
             (
                 id,
                 applicant_name,
                 mobile_number,
                 address,
-                house_type,
-                annual_income,
-                income_certificate,
-                address_proof
-                
+                boiler_type,
+                boiler_capacity,
+                year_of_installation,
+                purpose,
+                boiler_certificate
             )
             VALUES
-            ($1,$2,$3,$4,$5,$6,$7,$8)
+            ($1,$2,$3,$4,$5,$6,$7,$8,$9)
             `,
             [
                 applicationId,
                 applicant_name,
                 mobile_number,
                 address,
-                house_type,
-                annual_income,
-                incomeCertificate,
-                addressProof
+                boiler_type,
+                boiler_capacity,
+                year_of_installation,
+                purpose,
+                boilerCertificateFilename
                 
             ]);
 
@@ -465,7 +464,7 @@ const assignedTo =
 
 
 
-export const saveDrafthousingbyId = async (
+export const saveDraftboiler = async (
     req: Request,
     res: Response
 ) => {
@@ -480,27 +479,24 @@ export const saveDrafthousingbyId = async (
             applicant_name,
             mobile_number,
             address,
-            house_type,
-            annual_income
+            boiler_type,
+            boiler_capacity,    
+            year_of_installation,
+            purpose
         } = req.body;
 
         const files: any = req.files;
-        console.log("REQ FILES:");
-console.log(files);
 
-        const incomeCertificate =
-            files?.income_certificate
-                ? files.income_certificate[0].filename
+        const boilerCertificateFilename =
+            files?.boiler_certificate
+                ? files.boiler_certificate[0].filename
                 : null;
 
-        const addressProof =
-            files?.address_proof
-                ? files.address_proof[0].filename
-                : null;
+       
         
         const userId = req.user.id;
 
-        const workflowId = 1;
+        const workflowId = 2;
         const draftStateId = 1;
 
         // Get applicant office
@@ -555,19 +551,19 @@ console.log(files);
 
             await client.query(
 `
-UPDATE applications_housing
+UPDATE boiler_applications
 SET
     applicant_name=$1,
     mobile_number=$2,
     address=$3,
-    house_type=$4,
-    annual_income=$5,
+    boiler_type=$4,
+    boiler_capacity=$5,
+    installation_year=$6,
+    purpose=$7,
+    boiler_certificate =
+    COALESCE($8,boilerCertificateFilename),
 
-    income_certificate =
-    COALESCE($6,income_certificate),
-
-    address_proof =
-    COALESCE($7,address_proof)
+    
 
 WHERE id=$8
 `,
@@ -575,10 +571,11 @@ WHERE id=$8
     applicant_name,
     mobile_number,
     address,
-    house_type,
-    annual_income,
-    incomeCertificate,
-    addressProof,
+    boiler_type,
+    boiler_capacity,
+    year_of_installation,
+    purpose,
+    boilerCertificateFilename,
     applicationId
 ]
 );
@@ -597,7 +594,7 @@ WHERE id=$8
             // Create new draft
 
             const applicationNo =
-                "AppHousing-" + Date.now();
+                "AppBoiler-" + Date.now();
 
             const workflowResult = await client.query(
                 `
@@ -633,21 +630,22 @@ WHERE id=$8
 
             await client.query(
                 `
-                INSERT INTO applications_housing
+                INSERT INTO boiler_applications
                 (
                     id,
                     applicant_name,
                     mobile_number,
                     address,
-                    house_type,
-                    annual_income,
-                    income_certificate,
-                    address_proof
+                    boiler_type,
+                    boiler_capacity,
+                    year_of_installation,
+                    purpose,
+                    boiler_certificate
                     
                 )
                 VALUES
                 (
-                    $1,$2,$3,$4,$5,$6,$7,$8
+                    $1,$2,$3,$4,$5,$6,$7,$8,$9
                 )
                 `,
                 [
@@ -655,11 +653,11 @@ WHERE id=$8
                     applicant_name,
                     mobile_number,
                     address,
-                    house_type,
-                    annual_income,
-                    incomeCertificate,
-                    addressProof,
-                    
+                    boiler_type,
+                    boiler_capacity,
+                    year_of_installation,
+                    purpose,
+                    boilerCertificateFilename
                 ]
             );
 
@@ -695,7 +693,7 @@ WHERE id=$8
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
-export const getDrafthousingbyId = async (
+export const getDraftboiler = async (
     req: Request,
     res: Response
 ) => {
@@ -709,10 +707,10 @@ export const getDrafthousingbyId = async (
         SELECT
             ah.*
         FROM workflow_applications wa
-        JOIN applications_housing ah
+        JOIN boiler_applications ah
         ON wa.application_id = ah.id
         WHERE wa.created_by = $1
-        AND wa.workflow_id = 1
+        AND wa.workflow_id = 2
         AND wa.current_state_id = 1
         LIMIT 1
         `,

@@ -71,11 +71,11 @@ const saveDraft = async()=>{
 
 
 
-    if(files.certificate)
+    if(files.boiler_certificate)
     {
         data.append(
-            "certificate",
-            files.certificate
+            "boiler_certificate",
+            files.boiler_certificate
         );
     }
 
@@ -88,7 +88,7 @@ const saveDraft = async()=>{
 
         const response = await axios.post(
 
-            "http://localhost:5000/api/applications/draft",
+            "http://localhost:5000/api/applications/boiler/draft",
 
             data,
 
@@ -106,7 +106,7 @@ const saveDraft = async()=>{
 
         );
 
-
+console.log(response.data);
         alert(response.data.message);
 
 

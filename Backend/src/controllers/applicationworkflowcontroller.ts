@@ -142,7 +142,7 @@ export const getPendingApplications = async (
 
 
 
-export const getApplication = async(
+export const getApplicationbyId = async(
 
     req:Request,
     res:Response

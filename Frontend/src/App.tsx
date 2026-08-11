@@ -19,6 +19,8 @@ import EServices from "./pages/EServices";
     import HousingPage from "./pages/HousingPage";
  import BoilerPage from "./pages/BoilerPage";
 
+ import ApplicationEdit from "./pages/ApplicationEdit";
+ 
 function App() {
   return (
     <div>
@@ -63,7 +65,7 @@ element={<HousingPage/>}
 />
 <Route
     path="/applications/edit/:applicationId"
-    element={<ApplicationForm />}
+    element={<ApplicationEdit />}
 />
 <Route
 path="/services/boiler"
