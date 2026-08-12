@@ -60,11 +60,7 @@ path="/services/housing"
 element={<HousingPage/>}
 />
 <Route
-    path="/application/edit/:applicationId"
-    element={<ApplicationForm />}
-/>
-<Route
-    path="/applications/edit/:applicationId"
+    path="/applications/:workflowId/edit/:applicationId"
     element={<ApplicationEdit />}
 />
 <Route

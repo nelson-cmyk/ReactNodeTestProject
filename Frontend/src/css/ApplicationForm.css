@@ -351,3 +351,35 @@
     background:#bb2d3b !important;
 
 }
+
+.existing-file-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 8px 0 12px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.file-name {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+    word-break: break-all;
+}
+
+.view-file-button {
+    display: inline-block;
+    padding: 7px 14px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.view-file-button:hover {
+    background: #0056b3;
+}

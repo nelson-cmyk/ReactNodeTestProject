@@ -111,11 +111,11 @@ function DraftList({ workflowId }: Props) {
                             <td>
 
                                 <Link
-                                    className="table-action"
-                                    to={`/applications/edit/${draft.application_id}`}
-                                >
-                                    Continue
-                                </Link>
+    className="table-action"
+    to={`/applications/${workflowId}/edit/${draft.application_id}`}
+>
+    Continue
+</Link>
 
                             </td>
 

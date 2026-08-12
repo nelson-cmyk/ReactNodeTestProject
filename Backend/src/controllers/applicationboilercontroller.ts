@@ -39,7 +39,7 @@ export const createboilerApplication = async (
 
         const workflow_id = 2; 
 
-        const draftStateId = 1;
+        const draftStateId = 10;
 
         const submitActionId = 1;
 
@@ -395,7 +395,7 @@ const assignedTo =
             [
                 applicationId,
                 taskId,
-                1,
+                10,
                 2,
                 actionId,
                 assignedOffice,
@@ -497,7 +497,7 @@ export const saveDraftboiler = async (
         const userId = req.user.id;
 
         const workflowId = 2;
-        const draftStateId = 1;
+        const draftStateId = 10;
 
         // Get applicant office
         const officeResult = await client.query(
@@ -558,14 +558,11 @@ SET
     address=$3,
     boiler_type=$4,
     boiler_capacity=$5,
-    installation_year=$6,
+    year_of_installation=$6,
     purpose=$7,
     boiler_certificate =
-    COALESCE($8,boilerCertificateFilename),
-
-    
-
-WHERE id=$8
+    COALESCE($8,boiler_certificate)
+WHERE id=$9
 `,
 [
     applicant_name,

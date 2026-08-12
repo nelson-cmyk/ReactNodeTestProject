@@ -1,280 +1,250 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/ApplicationForm.css";
-import { useParams } from "react-router-dom";
 
+interface ApplicationFormProps {
+    applicationId?: string;
+}
 
-
-
-function ApplicationForm() {
-
-
-    const { applicationId } = useParams();
-
+function ApplicationForm({
+    applicationId
+}: ApplicationFormProps) {
 
     const [formData, setFormData] = useState<any>({
-
         applicant_name: "",
         mobile_number: "",
         address: "",
         house_type: "Residential",
         annual_income: ""
-
     });
-
-
 
     const [existingFiles, setExistingFiles] = useState({
-
         income_certificate: "",
         address_proof: ""
-
     });
-
-
 
     const [files, setFiles] = useState<any>({});
 
-
-
-    // ===============================
-    // Load Draft / Edit Application
-    // ===============================
+    // =========================================
+    // Load Application
+    // =========================================
 
     useEffect(() => {
 
-
-        if(applicationId)
-        {   console.log("Calling loadApplication");
-            loadApplication(applicationId);
+        if (!applicationId) {
+            console.log("No application ID");
+            return;
         }
-        
 
+        loadApplication(applicationId);
 
     }, [applicationId]);
 
 
+    const loadApplication = async (id: string) => {
 
+        try {
 
+            console.log("================================");
+            console.log("Loading Housing Application");
+            console.log("Application ID:", id);
 
-    // ===============================
-    // Load Application By ID
-    // ===============================
-
-    const loadApplication = async(id:string)=>{
-
-
-        try{
-
-console.log("Loading application:", id);
             const token =
-            localStorage.getItem("token");
-
-
+                localStorage.getItem("token");
 
             const response = await axios.get(
-
-                `http://localhost:5000/api/applications/edit/${id}`,
-
+                `http://localhost:5000/api/applications/housing/edit/${id}`,
                 {
-                    headers:{
-                        Authorization:`Bearer ${token}`
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
-
             );
 
-console.log("id",id);
-console.log(
-    "API RESPONSE:",
-    response.data
-    
-);
-            const app=response.data.application;
+            console.log("FULL API RESPONSE:");
+            console.log(response.data);
 
+            // IMPORTANT:
+            // Check whether your controller returns:
+            // response.json({ application: row })
+            // or
+            // response.json(row)
 
+            const app =
+                response.data.application ||
+                response.data;
 
-console.log("Application Data:", app);
-console.log("Applicant Name:", app.applicant_name);
-console.log("Mobile:", app.mobile_number);
-console.log("Address:", app.address);
-console.log("House Type:", app.house_type);
-console.log("Annual Income:", app.annual_income);
+            console.log("APPLICATION OBJECT:");
+            console.log(app);
+
+            console.log("Applicant Name:", app.applicant_name);
+            console.log("Mobile:", app.mobile_number);
+            console.log("Address:", app.address);
+            console.log("House Type:", app.house_type);
+            console.log("Annual Income:", app.annual_income);
+            console.log(
+                "Income Certificate:",
+                app.income_certificate
+            );
+            console.log(
+                "Address Proof:",
+                app.address_proof
+            );
+
+            // =========================================
+            // Set Form Fields
+            // =========================================
 
             setFormData({
+                applicant_name:
+                    app.applicant_name ?? "",
 
-                applicant_name:app.applicant_name,
-                mobile_number:app.mobile_number,
-                address:app.address,
-                house_type:app.house_type,
-                annual_income:app.annual_income
+                mobile_number:
+                    app.mobile_number ?? "",
 
+                address:
+                    app.address ?? "",
+
+                house_type:
+                    app.house_type ?? "Residential",
+
+                annual_income:
+                    app.annual_income ?? ""
             });
 
-
+            // =========================================
+            // Existing Files
+            // =========================================
 
             setExistingFiles({
-
                 income_certificate:
-                app.income_certificate,
+                    app.income_certificate ?? "",
 
                 address_proof:
-                app.address_proof
-
+                    app.address_proof ?? ""
             });
 
+        }
+        catch (error: any) {
+
+            console.log(
+                "ERROR LOADING HOUSING APPLICATION:"
+            );
+
+            console.log(
+                error.response?.data ||
+                error.message
+            );
 
         }
-        catch(error)
-        {
-
-            console.log(error);
-
-        }
-
 
     };
 
 
+    // =========================================
+    // Handle Input
+    // =========================================
+
+    const handleChange = (e: any) => {
+
+        const {
+            name,
+            value
+        } = e.target;
+
+        setFormData((previous: any) => ({
+            ...previous,
+            [name]: value
+        }));
+
+    };
 
 
+    // =========================================
+    // Handle File
+    // =========================================
 
-    const handleChange=(e:any)=>{
+    const handleFile = (e: any) => {
 
-
-        setFormData({
-
-            ...formData,
-
+        setFiles((previous: any) => ({
+            ...previous,
             [e.target.name]:
-            e.target.value
-
-        });
-
+                e.target.files?.[0]
+        }));
 
     };
 
 
-
-
-
-    const handleFile=(e:any)=>{
-
-
-        setFiles({
-
-            ...files,
-
-            [e.target.name]:
-            e.target.files[0]
-
-        });
-
-
-    };
-
-
-
-
-
-    // ===============================
+    // =========================================
     // Save Draft
-    // ===============================
+    // =========================================
 
-    const saveDraft = async()=>{
+    const saveDraft = async () => {
 
+        const data = new FormData();
 
-        const data=new FormData();
-
-
-
-        Object.keys(formData).forEach(key=>{
-
+        Object.keys(formData).forEach(key => {
 
             data.append(
-
                 key,
-
                 formData[key]
-
             );
-
 
         });
 
-
-
-        if(files.income_certificate)
-        {
+        if (files.income_certificate) {
 
             data.append(
-
                 "income_certificate",
-
                 files.income_certificate
-
             );
 
         }
 
-
-
-        if(files.address_proof)
-        {
+        if (files.address_proof) {
 
             data.append(
-
                 "address_proof",
-
                 files.address_proof
-
             );
 
         }
 
+        try {
 
+            const token =
+                localStorage.getItem("token");
 
-        try{
-
-
-            const token=
-            localStorage.getItem("token");
-
-
-
-            await axios.post(
-
+            const response = await axios.post(
                 "http://localhost:5000/api/applications/draft",
-
                 data,
-
                 {
-
-                    headers:{
-
+                    headers: {
                         Authorization:
-                        `Bearer ${token}`,
-
+                            `Bearer ${token}`,
                         "Content-Type":
-                        "multipart/form-data"
-
+                            "multipart/form-data"
                     }
-
                 }
-
             );
 
+            console.log(
+                "Draft response:",
+                response.data
+            );
 
             alert(
                 "Application saved as draft"
             );
 
-
         }
-        catch(error)
-        {
+        catch (error: any) {
 
-            console.log(error);
+            console.log(
+                "Draft error:",
+                error.response?.data ||
+                error.message
+            );
 
             alert(
                 "Draft save failed"
@@ -282,105 +252,82 @@ console.log("Annual Income:", app.annual_income);
 
         }
 
-
     };
 
 
+    // =========================================
+    // Submit
+    // =========================================
 
-
-
-    // ===============================
-    // Submit Application
-    // ===============================
-
-    const submitForm=async(e:any)=>{
-
+    const submitForm = async (e: any) => {
 
         e.preventDefault();
 
+        const data = new FormData();
 
-
-        const data=new FormData();
-
-
-
-        Object.keys(formData).forEach(key=>{
-
+        Object.keys(formData).forEach(key => {
 
             data.append(
-
                 key,
-
                 formData[key]
-
             );
-
 
         });
 
+        if (files.income_certificate) {
 
-
-        if(files.income_certificate)
-        {
             data.append(
                 "income_certificate",
                 files.income_certificate
             );
+
         }
 
+        if (files.address_proof) {
 
-
-        if(files.address_proof)
-        {
             data.append(
                 "address_proof",
                 files.address_proof
             );
+
         }
 
-
-
-        try{
-
+        try {
 
             const token =
-            localStorage.getItem("token");
-
-
+                localStorage.getItem("token");
 
             const response =
-            await axios.post(
-
-                "http://localhost:5000/api/applications",
-
-                data,
-
-                {
-
-                    headers:{
-
-                        Authorization:
-                        `Bearer ${token}`,
-
-                        "Content-Type":
-                        "multipart/form-data"
-
+                await axios.post(
+                    "http://localhost:5000/api/applications",
+                    data,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                            "Content-Type":
+                                "multipart/form-data"
+                        }
                     }
+                );
 
-                }
-
+            console.log(
+                "Submit response:",
+                response.data
             );
 
-
-
-            alert(response.data.message);
-
+            alert(
+                response.data.message
+            );
 
         }
-        catch(error)
-        {
+        catch (error: any) {
 
-            console.log(error);
+            console.log(
+                "Submission error:",
+                error.response?.data ||
+                error.message
+            );
 
             alert(
                 "Submission failed"
@@ -388,245 +335,160 @@ console.log("Annual Income:", app.annual_income);
 
         }
 
-
     };
-
-
-
 
 
     return (
 
-<div className="application-container">
+        <div className="application-container">
 
+            <h2>
+                Housing Application Form
+            </h2>
 
-<h2>
-Housing Application Form
-</h2>
+            <form onSubmit={submitForm}>
 
+                <label>
+                    Applicant Name
+                </label>
 
+                <input
+                    name="applicant_name"
+                    value={formData.applicant_name}
+                    onChange={handleChange}
+                />
 
-<form onSubmit={submitForm}>
 
+                <label>
+                    Mobile Number
+                </label>
 
-<label>
-Applicant Name
-</label>
+                <input
+                    name="mobile_number"
+                    maxLength={10}
+                    value={formData.mobile_number}
+                    onChange={handleChange}
+                />
 
 
-<input
+                <label>
+                    Address
+                </label>
 
-name="applicant_name"
+                <textarea
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                />
 
-value={formData.applicant_name}
 
-onChange={handleChange}
+                <label>
+                    House Type
+                </label>
 
-/>
+                <select
+                    name="house_type"
+                    value={formData.house_type}
+                    onChange={handleChange}
+                >
 
+                    <option value="Residential">
+                        Residential
+                    </option>
 
+                    <option value="Commercial">
+                        Commercial
+                    </option>
 
-<label>
-Mobile Number
-</label>
+                    <option value="Rental">
+                        Rental
+                    </option>
 
+                </select>
 
-<input
 
-name="mobile_number"
+                <label>
+                    Annual Income
+                </label>
 
-maxLength={10}
+                <input
+                    type="number"
+                    name="annual_income"
+                    value={formData.annual_income}
+                    onChange={handleChange}
+                />
 
-value={formData.mobile_number}
 
-onChange={handleChange}
+                <label>
+                    Income Certificate
+                </label>
 
-/>
+                {existingFiles.income_certificate && (
 
+                    <a
+                        href={
+                            `http://localhost:5000/uploads/${existingFiles.income_certificate}`
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        View Existing File
+                    </a>
 
+                )}
 
-<label>
-Address
-</label>
+                <input
+                    type="file"
+                    name="income_certificate"
+                    onChange={handleFile}
+                />
 
 
-<textarea
+                <label>
+                    Address Proof
+                </label>
 
-name="address"
+                {existingFiles.address_proof && (
 
-value={formData.address}
+                    <a
+                        href={
+                            `http://localhost:5000/uploads/${existingFiles.address_proof}`
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        View Existing File
+                    </a>
 
-onChange={handleChange}
+                )}
 
-/>
+                <input
+                    type="file"
+                    name="address_proof"
+                    onChange={handleFile}
+                />
 
 
+                <button
+                    type="button"
+                    onClick={saveDraft}
+                >
+                    Save Draft
+                </button>
 
-<label>
-House Type
-</label>
 
+                <button
+                    type="submit"
+                >
+                    Submit Application
+                </button>
 
-<select
+            </form>
 
-name="house_type"
-
-value={formData.house_type}
-
-onChange={handleChange}
-
->
-
-<option>Residential</option>
-<option>Commercial</option>
-<option>Rental</option>
-
-</select>
-
-
-
-
-<label>
-Annual Income
-</label>
-
-
-<input
-
-type="number"
-
-name="annual_income"
-
-value={formData.annual_income}
-
-onChange={handleChange}
-
-/>
-
-
-
-
-
-<label>
-Income Certificate
-</label>
-
-
-{
-existingFiles.income_certificate &&
-
-<a
-
-href={
-`http://localhost:5000/uploads/${existingFiles.income_certificate}`
-}
-
-target="_blank"
-
-rel="noreferrer"
-
->
-
-View Existing File
-
-</a>
-
-}
-
-
-
-<input
-
-type="file"
-
-name="income_certificate"
-
-onChange={handleFile}
-
-/>
-
-
-
-
-
-<label>
-Address Proof
-</label>
-
-
-{
-existingFiles.address_proof &&
-
-<a
-
-href={
-`http://localhost:5000/uploads/${existingFiles.address_proof}`
-}
-
-target="_blank"
-
-rel="noreferrer"
-
->
-
-View Existing File
-
-</a>
-
-}
-
-
-
-<input
-
-type="file"
-
-name="address_proof"
-
-onChange={handleFile}
-
-/>
-
-
-
-
-
-<button
-
-type="button"
-
-onClick={saveDraft}
-
->
-
-Save Draft
-
-</button>
-
-
-
-
-<button
-
-type="submit"
-
->
-
-Submit Application
-
-</button>
-
-
-
-</form>
-
-
-</div>
-
+        </div>
 
     );
 
 }
-
 
 export default ApplicationForm;

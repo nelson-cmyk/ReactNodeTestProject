@@ -1,14 +1,16 @@
 //As per boiler application form
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/ApplicationForm.css";
+import { useNavigate } from "react-router-dom";
 
+interface BoilerApplicationFormProps {
+    applicationId?: string;
+}
 
-function BoilerApplicationForm() {
-
-
+function BoilerApplicationForm({ applicationId }: BoilerApplicationFormProps) {
 const [formData,setFormData] = useState<any>({
 
     applicant_name:"",
@@ -16,15 +18,16 @@ const [formData,setFormData] = useState<any>({
     address:"",
     boiler_type:"",
     boiler_capacity:"",
-    installation_year:"",
+    year_of_installation:"",
     purpose:""
 
 });
 
-
+const navigate = useNavigate();
 const [files,setFiles]=useState<any>({});
 
-
+const [existingCertificate, setExistingCertificate] =
+    useState<string>("");
 
 const handleChange=(e:any)=>{
 
@@ -40,6 +43,130 @@ const handleChange=(e:any)=>{
 
 
 
+
+
+useEffect(() => {
+
+    if (!applicationId) {
+        return;
+    }
+    
+    const loadDraft = async () => {
+
+        try {
+
+            const token =
+                localStorage.getItem("token");
+
+            const response = await axios.get(
+                `http://localhost:5000/api/applications/boiler/edit/${applicationId}`,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+            console.log(
+                "FULL API RESPONSE:",
+                response.data
+            );
+
+            // =========================================
+            // IMPORTANT
+            // Data is inside response.data.application
+            // =========================================
+
+            const application =
+                response.data.application;
+
+            console.log(
+                "APPLICATION DATA:",
+                application
+            );
+
+            console.log(
+                "Applicant:",
+                application.applicant_name
+            );
+
+            console.log(
+                "Mobile:",
+                application.mobile_number
+            );
+
+            console.log(
+                "Address:",
+                application.address
+            );
+
+            console.log(
+                "Boiler Type:",
+                application.boiler_type
+            );
+
+            console.log(
+                "Boiler Capacity:",
+                application.boiler_capacity
+            );
+
+            console.log(
+                "Year:",
+                application.year_of_installation
+            );
+
+            console.log(
+                "Purpose:",
+                application.purpose
+            );
+
+
+            setFormData({
+
+                applicant_name:
+                    application.applicant_name ?? "",
+
+                mobile_number:
+                    application.mobile_number ?? "",
+
+                address:
+                    application.address ?? "",
+
+                boiler_type:
+                    application.boiler_type ?? "",
+
+                boiler_capacity:
+                    application.boiler_capacity ?? "",
+
+                year_of_installation:
+                    application.year_of_installation ?? "",
+
+                purpose:
+                    application.purpose ?? ""
+
+            });
+setExistingCertificate(
+    application.boiler_certificate ?? ""
+);
+        }
+        catch (error: any) {
+
+            console.log(
+                "Error loading boiler draft:",
+                error.response?.data ||
+                error.message
+            );
+
+        }
+
+    };
+
+    loadDraft();
+
+}, [applicationId]);
+
+
 const handleFile=(e:any)=>{
 
     setFiles({
@@ -53,14 +180,11 @@ const handleFile=(e:any)=>{
 };
 
 
-
-const saveDraft = async()=>{
-
+const saveDraft = async () => {
 
     const data = new FormData();
 
-
-    Object.keys(formData).forEach(key=>{
+    Object.keys(formData).forEach(key => {
 
         data.append(
             key,
@@ -70,133 +194,148 @@ const saveDraft = async()=>{
     });
 
 
+    if (applicationId) {
 
-    if(files.boiler_certificate)
-    {
+        data.append(
+            "application_id",
+            applicationId
+        );
+
+    }
+
+
+    if (files.boiler_certificate) {
+
         data.append(
             "boiler_certificate",
             files.boiler_certificate
         );
+
     }
 
 
+    try {
 
-    try{
-
-        const token = localStorage.getItem("token");
-
+        const token =
+            localStorage.getItem("token");
 
         const response = await axios.post(
-
             "http://localhost:5000/api/applications/boiler/draft",
-
             data,
-
             {
-
-                headers:{
-
-                    Authorization:`Bearer ${token}`,
-
-                    "Content-Type":"multipart/form-data"
-
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`,
+                    "Content-Type":
+                        "multipart/form-data"
                 }
-
             }
-
         );
 
-console.log(response.data);
+        console.log(
+            "Save Draft Response:",
+            response.data
+        );
+
         alert(response.data.message);
 
-
     }
-    catch(error:any){
+    catch (error: any) {
 
-        console.log(error.response?.data);
+        console.log(
+            "Save Draft Error:",
+            error.response?.data ||
+            error.message
+        );
 
         alert("Draft save failed");
 
     }
 
-
 };
 
 
 
+const submitForm = async (e: any) => {
 
-const submitForm=async(e:any)=>{
+    e.preventDefault();
 
-e.preventDefault();
+    const data = new FormData();
 
+    Object.keys(formData).forEach(key => {
 
-const data = new FormData();
+        data.append(
+            key,
+            formData[key]
+        );
 
-
-
-Object.keys(formData).forEach(key=>{
-
-    data.append(
-        key,
-        formData[key]
-    );
-
-});
+    });
 
 
+    // Existing draft/application
+    if (applicationId) {
 
-if(files.certificate)
-{
-    data.append(
-        "certificate",
-        files.certificate
-    );
-}
-
-
-
-try{
-
-
-const token = localStorage.getItem("token");
-
-
-const response = await axios.post(
-
-    "http://localhost:5000/api/applications/boiler",
-
-    data,
-
-    {
-
-        headers:{
-
-            Authorization:`Bearer ${token}`,
-
-            "Content-Type":"multipart/form-data"
-
-        }
+        data.append(
+            "application_id",
+            applicationId
+        );
 
     }
 
-);
+
+    if (files.boiler_certificate) {
+
+        data.append(
+            "boiler_certificate",
+            files.boiler_certificate
+        );
+
+    }
 
 
-alert(response.data.message);
+    try {
 
+        const token =
+            localStorage.getItem("token");
 
-}
-catch(error:any){
+        const response = await axios.post(
+            "http://localhost:5000/api/applications/boiler",
+            data,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`,
+                    "Content-Type":
+                        "multipart/form-data"
+                }
+            }
+        );
 
-console.log(error.response?.data);
+        console.log(
+            "Submit Response:",
+            response.data
+        );
 
-alert("Submission failed");
+        alert(
+            response.data.message
+        );
+        navigate("/dashboard");
+    }
+    catch (error: any) {
 
-}
+        console.log(
+            "Submit Error:",
+            error.response?.data ||
+            error.message
+        );
 
+        alert(
+            "Submission failed"
+        );
+
+    }
 
 };
-
 
 
 
@@ -339,9 +478,9 @@ Year of Installation
 
 type="number"
 
-name="installation_year"
+name="year_of_installation"
 
-value={formData.installation_year}
+value={formData.year_of_installation}
 
 onChange={handleChange}
 
@@ -370,19 +509,29 @@ onChange={handleChange}
 
 
 
-<label>
-Upload Boiler Certificate
-</label>
+<label>Upload Boiler Certificate</label>
 
+{existingCertificate && (
+    <div className="existing-file-container">
+        <span className="file-name">
+            {existingCertificate}
+        </span>
+
+        <a
+            href={`http://localhost:5000/uploads/${existingCertificate}`}
+            target="_blank"
+            rel="noreferrer"
+            className="view-file-button"
+        >
+            View Certificate
+        </a>
+    </div>
+)}
 
 <input
-
-type="file"
-
-name="certificate"
-
-onChange={handleFile}
-
+    type="file"
+    name="boiler_certificate"
+    onChange={handleFile}
 />
 
 

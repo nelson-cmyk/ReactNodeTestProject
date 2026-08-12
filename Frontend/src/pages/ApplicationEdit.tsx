@@ -1,109 +1,55 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 
 import ApplicationForm from "./ApplicationForm";
 import BoilerApplicationForm from "./BoilerApplicationForm";
 
 function ApplicationEdit() {
 
-    const { applicationId } = useParams();
-
-    const [workflowId, setWorkflowId] =
-        useState<number | null>(null);
-
-    const [loading, setLoading] =
-        useState(true);
+    const {
+        workflowId,
+        applicationId
+    } = useParams();
 
 
-    useEffect(() => {
+    console.log(
+        "Workflow ID:",
+        workflowId
+    );
 
-        const loadApplication = async () => {
-
-            try {
-
-                const token =
-                    localStorage.getItem("token");
-
-                console.log(
-                    "Application ID:",
-                    applicationId
-                );
+    console.log(
+        "Application ID:",
+        applicationId
+    );
 
 
-                const response =
-                    await axios.get(
-                        `http://localhost:5000/api/applications/edit/${applicationId}`,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ${token}`
-                            }
-                        }
-                    );
-
-
-                console.log(
-                    "Application:",
-                    response.data
-                );
-
-
-                setWorkflowId(
-                    response.data.workflow_id
-                );
-
-            }
-            catch (error) {
-
-                console.log(
-                    "Error loading application:",
-                    error
-                );
-
-            }
-            finally {
-
-                setLoading(false);
-
-            }
-
-        };
-
-
-        if (applicationId) {
-
-            loadApplication();
-
-        }
-
-    }, [applicationId]);
-
-
-    if (loading) {
+    if (!applicationId) {
 
         return (
             <div>
-                Loading application...
+                Invalid application ID
             </div>
         );
 
     }
 
 
-    if (workflowId === 1) {
+    if (workflowId === "1") {
 
         return (
-            <ApplicationForm />
+            <ApplicationForm
+                applicationId={applicationId}
+            />
         );
 
     }
 
 
-    if (workflowId === 2) {
+    if (workflowId === "2") {
 
         return (
-            <BoilerApplicationForm />
+            <BoilerApplicationForm
+                applicationId={applicationId}
+            />
         );
 
     }
