@@ -33,7 +33,7 @@ function ApplicationEdit() {
 
                 const response =
                     await axios.get(
-                        `http://localhost:5000/api/applications/${applicationId}`,
+                        `http://localhost:5000/api/applications/edit/${applicationId}`,
                         {
                             headers: {
                                 Authorization:

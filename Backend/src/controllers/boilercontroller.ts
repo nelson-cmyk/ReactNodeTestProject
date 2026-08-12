@@ -699,7 +699,7 @@ export const getDraftboiler = async (
 ) => {
     
     try {
-
+        console.log("Fetching draft application with ID:", req.params.id);
         const userId = req.user.id;
 
         const result = await pool.query(
