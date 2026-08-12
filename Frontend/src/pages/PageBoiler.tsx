@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import ApplicationForm from "./ApplicationForm";
+import BoilerApplicationForm from "./ApplicationFormBoiler";
 import DraftList from "./DraftList";
 import SubmittedList from "./SubmittedList";
 
 import "../css/Service.css";
 
-function HousingPage() {
+function BoilerPage() {
 
-    const workflowId = 1;
+    const workflowId = 2;
 
     const [tab, setTab] = useState("new");
 
@@ -17,6 +17,10 @@ function HousingPage() {
 
     const [checkingDraft, setCheckingDraft] = useState(true);
 
+
+    /* =========================================
+       Check Applicant's Drafts
+       ========================================= */
 
     useEffect(() => {
 
@@ -41,23 +45,28 @@ function HousingPage() {
             );
 
 
+            console.log(
+                "Boiler Drafts:",
+                response.data
+            );
+
+
             const draftData =
                 Array.isArray(response.data)
                     ? response.data
                     : [];
 
 
-            console.log(
-                "Housing Drafts:",
-                draftData
-            );
-
+            /*
+             * Store drafts
+             */
 
             setDrafts(draftData);
 
 
             /*
-             * Draft exists
+             * Automatically open Drafts
+             * if applicant has a draft.
              */
 
             if (draftData.length > 0) {
@@ -65,11 +74,6 @@ function HousingPage() {
                 setTab("draft");
 
             }
-
-            /*
-             * No draft
-             */
-
             else {
 
                 setTab("new");
@@ -80,9 +84,14 @@ function HousingPage() {
         catch (error) {
 
             console.error(
-                "Error checking drafts:",
+                "Error checking boiler drafts:",
                 error
             );
+
+            /*
+             * If API fails,
+             * open New Application.
+             */
 
             setDrafts([]);
 
@@ -98,6 +107,10 @@ function HousingPage() {
     };
 
 
+    /* =========================================
+       Loading
+       ========================================= */
+
     if (checkingDraft) {
 
         return (
@@ -105,7 +118,7 @@ function HousingPage() {
             <div className="service-container">
 
                 <h2>
-                    Housing Assistance
+                    Boiler Assistance
                 </h2>
 
                 <div className="tab-content">
@@ -121,14 +134,26 @@ function HousingPage() {
     }
 
 
+    /* =========================================
+       Main Page
+       ========================================= */
+
     return (
 
         <div className="service-container">
 
+            {/* =========================================
+                Page Header
+                ========================================= */}
+
             <h2>
-                Housing Assistance
+                Boiler Assistance
             </h2>
 
+
+            {/* =========================================
+                Tabs
+                ========================================= */}
 
             <div className="tabs">
 
@@ -138,7 +163,6 @@ function HousingPage() {
                             ? "active"
                             : ""
                     }
-
                     onClick={() =>
                         setTab("new")
                     }
@@ -153,7 +177,6 @@ function HousingPage() {
                             ? "active"
                             : ""
                     }
-
                     onClick={() =>
                         setTab("draft")
                     }
@@ -168,7 +191,6 @@ function HousingPage() {
                             ? "active"
                             : ""
                     }
-
                     onClick={() =>
                         setTab("submitted")
                     }
@@ -179,11 +201,15 @@ function HousingPage() {
             </div>
 
 
+            {/* =========================================
+                Tab Content
+                ========================================= */}
+
             <div className="tab-content">
 
                 {tab === "new" && (
 
-                    <ApplicationForm />
+                    <BoilerApplicationForm />
 
                 )}
 
@@ -214,4 +240,4 @@ function HousingPage() {
 
 }
 
-export default HousingPage;
+export default BoilerPage;

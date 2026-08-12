@@ -11,16 +11,16 @@ import {
 } from "react-router-dom";
 
 import "./css/Layout.css";
-import ApplicationForm from "./pages/ApplicationForm";
+import ApplicationForm from "./pages/ApplicationFormHousing";
 import ApplicationPending from "./pages/ApplicationPending";
 import WorkflowApplication from "./pages/ApplicationWorkflow";
 
 import EServices from "./pages/EServices";
-    import HousingPage from "./pages/HousingPage";
- import BoilerPage from "./pages/BoilerPage";
+    import HousingPage from "./pages/PageHousing";
+ import BoilerPage from "./pages/PageBoiler";
 
  import ApplicationEdit from "./pages/ApplicationEdit";
- 
+ import ApplicationView from "./pages/ApplicationView";
 function App() {
   return (
     <div>
@@ -62,6 +62,10 @@ element={<HousingPage/>}
 <Route
     path="/applications/:workflowId/edit/:applicationId"
     element={<ApplicationEdit />}
+/>
+<Route
+    path="/workflow/application/:id"
+    element={<ApplicationView />}
 />
 <Route
 path="/services/boiler"

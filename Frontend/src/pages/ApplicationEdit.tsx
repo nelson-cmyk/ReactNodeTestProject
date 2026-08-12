@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
-import ApplicationForm from "./ApplicationForm";
-import BoilerApplicationForm from "./BoilerApplicationForm";
+import ApplicationForm from "./ApplicationFormHousing";
+import BoilerApplicationForm from "./ApplicationFormBoiler";
 
 function ApplicationEdit() {
 

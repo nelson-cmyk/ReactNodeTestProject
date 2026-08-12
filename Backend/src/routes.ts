@@ -172,4 +172,14 @@ router.get(
     verifyToken,
     getDraftboiler
 );
+
+router.get(
+
+    "/workflow/application/:id",
+
+    verifyToken,
+
+    getApplicationbyId
+
+);
 export default router;

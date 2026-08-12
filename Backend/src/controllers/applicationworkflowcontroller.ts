@@ -142,87 +142,197 @@ export const getPendingApplications = async (
 
 
 
-export const getApplicationbyId = async(
+export const getApplicationbyId = async (
+    req: Request,
+    res: Response
+) => {
 
-    req:Request,
-    res:Response
+    try {
 
-)=>{
+        const applicationId = req.params.id;
 
-    try{
-
-        const applicationId=req.params.id;
         const roleId = req.user.role_id;
-        const result=await pool.query(
 
-        `
-        SELECT
 
-    wa.application_no,
-    wa.workflow_id,
-    wa.current_state_id,
-    ah.*
+        // =====================================================
+        // 1. Get Common Workflow Application Information
+        // =====================================================
 
-FROM workflow_applications wa
-JOIN applications_housing ah
-ON wa.application_id = ah.id
-
-WHERE wa.application_id = $1
-
-        `,
-
-        [applicationId]
-
+        const workflowResult = await pool.query(
+            `
+            SELECT
+                wa.application_id,
+                wa.application_no,
+                wa.workflow_id,
+                wa.created_by,
+                wa.office_id,
+                wa.current_state_id,
+                wa.application_status,
+                wa.created_at,
+                wa.updated_at
+            FROM workflow_applications wa
+            WHERE wa.application_id = $1
+            `,
+            [applicationId]
         );
 
-        if(result.rows.length===0){
+
+        if (workflowResult.rows.length === 0) {
 
             return res.status(404).json({
-
-                message:"Application not found"
-
+                message: "Application not found"
             });
 
         }
-        const application = result.rows[0];
-console.log("Fetched application:", application.workflow_id, application.current_state_id);
+
+
+        const workflowApplication =
+            workflowResult.rows[0];
+
+
+        console.log(
+            "Workflow Application:",
+            workflowApplication
+        );
+
+
+        const workflowId =
+            workflowApplication.workflow_id;
+
+
+        // =====================================================
+        // 2. Load Service/Application Data
+        // =====================================================
+
+        let serviceResult;
+
+
+        // -----------------------------------------------------
+        // Housing
+        // -----------------------------------------------------
+
+        if (workflowId === 1) {
+
+            serviceResult = await pool.query(
+                `
+                SELECT *
+                FROM applications_housing
+                WHERE id = $1
+                `,
+                [applicationId]
+            );
+
+        }
+
+
+        // -----------------------------------------------------
+        // Boiler
+        // -----------------------------------------------------
+
+        else if (workflowId === 2) {
+
+            serviceResult = await pool.query(
+                `
+                SELECT *
+                FROM boiler_applications
+                WHERE id = $1
+                `,
+                [applicationId]
+            );
+
+        }
+
+
+        // -----------------------------------------------------
+        // Unknown Workflow
+        // -----------------------------------------------------
+
+        else {
+
+            return res.status(400).json({
+                message: "Unsupported workflow"
+            });
+
+        }
+
+
+        if (serviceResult.rows.length === 0) {
+
+            return res.status(404).json({
+                message: "Application details not found"
+            });
+
+        }
+
+
+        // =====================================================
+        // 3. Combine Common + Service Data
+        // =====================================================
+
+        const application = {
+
+            ...workflowApplication,
+
+            ...serviceResult.rows[0]
+
+        };
+
+
+        console.log(
+            "Fetched application:",
+            application
+        );
+
+
+        // =====================================================
+        // 4. Get Available Workflow Actions
+        // =====================================================
 
         const actionResult = await pool.query(
-`
-SELECT
-    wa.action_id,
-    wa.action_name
-FROM workflow_transitions wt
-JOIN workflow_actions wa
-ON wt.action_id = wa.action_id
-WHERE wt.workflow_id = $1
-AND wt.from_state_id = $2
-AND wt.role_id = $3
-ORDER BY wa.action_name
-`,
-[
-    application.workflow_id,
-    application.current_state_id,
-    roleId
-]
-);
+            `
+            SELECT
+                wa.action_id,
+                wa.action_name
+            FROM workflow_transitions wt
+            JOIN workflow_actions wa
+                ON wt.action_id = wa.action_id
+            WHERE wt.workflow_id = $1
+            AND wt.from_state_id = $2
+            AND wt.role_id = $3
+            ORDER BY wa.action_name
+            `,
+            [
+                workflowId,
+                workflowApplication.current_state_id,
+                roleId
+            ]
+        );
+
+
+        // =====================================================
+        // 5. Response
+        // =====================================================
+
         res.json({
 
-    application,
+            application,
 
-    actions: actionResult.rows
+            actions: actionResult.rows
 
-});
+        });
 
     }
+    catch (error) {
 
-    catch(error){
-
-        console.log(error);
+        console.log(
+            "Get Application Error:",
+            error
+        );
 
         res.status(500).json({
 
-            message:"Unable to load application"
+            message:
+                "Unable to load application"
 
         });
 

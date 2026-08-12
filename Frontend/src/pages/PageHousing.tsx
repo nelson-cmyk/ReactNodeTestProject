@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import BoilerApplicationForm from "./BoilerApplicationForm";
+import ApplicationForm from "./ApplicationFormHousing";
 import DraftList from "./DraftList";
 import SubmittedList from "./SubmittedList";
 
 import "../css/Service.css";
 
-function BoilerPage() {
+function HousingPage() {
 
-    const workflowId = 2;
+    const workflowId = 1;
 
     const [tab, setTab] = useState("new");
 
@@ -17,10 +17,6 @@ function BoilerPage() {
 
     const [checkingDraft, setCheckingDraft] = useState(true);
 
-
-    /* =========================================
-       Check Applicant's Drafts
-       ========================================= */
 
     useEffect(() => {
 
@@ -45,28 +41,23 @@ function BoilerPage() {
             );
 
 
-            console.log(
-                "Boiler Drafts:",
-                response.data
-            );
-
-
             const draftData =
                 Array.isArray(response.data)
                     ? response.data
                     : [];
 
 
-            /*
-             * Store drafts
-             */
+            console.log(
+                "Housing Drafts:",
+                draftData
+            );
+
 
             setDrafts(draftData);
 
 
             /*
-             * Automatically open Drafts
-             * if applicant has a draft.
+             * Draft exists
              */
 
             if (draftData.length > 0) {
@@ -74,6 +65,11 @@ function BoilerPage() {
                 setTab("draft");
 
             }
+
+            /*
+             * No draft
+             */
+
             else {
 
                 setTab("new");
@@ -84,14 +80,9 @@ function BoilerPage() {
         catch (error) {
 
             console.error(
-                "Error checking boiler drafts:",
+                "Error checking drafts:",
                 error
             );
-
-            /*
-             * If API fails,
-             * open New Application.
-             */
 
             setDrafts([]);
 
@@ -107,10 +98,6 @@ function BoilerPage() {
     };
 
 
-    /* =========================================
-       Loading
-       ========================================= */
-
     if (checkingDraft) {
 
         return (
@@ -118,7 +105,7 @@ function BoilerPage() {
             <div className="service-container">
 
                 <h2>
-                    Boiler Assistance
+                    Housing Assistance
                 </h2>
 
                 <div className="tab-content">
@@ -134,26 +121,14 @@ function BoilerPage() {
     }
 
 
-    /* =========================================
-       Main Page
-       ========================================= */
-
     return (
 
         <div className="service-container">
 
-            {/* =========================================
-                Page Header
-                ========================================= */}
-
             <h2>
-                Boiler Assistance
+                Housing Assistance
             </h2>
 
-
-            {/* =========================================
-                Tabs
-                ========================================= */}
 
             <div className="tabs">
 
@@ -163,6 +138,7 @@ function BoilerPage() {
                             ? "active"
                             : ""
                     }
+
                     onClick={() =>
                         setTab("new")
                     }
@@ -177,6 +153,7 @@ function BoilerPage() {
                             ? "active"
                             : ""
                     }
+
                     onClick={() =>
                         setTab("draft")
                     }
@@ -191,6 +168,7 @@ function BoilerPage() {
                             ? "active"
                             : ""
                     }
+
                     onClick={() =>
                         setTab("submitted")
                     }
@@ -201,15 +179,11 @@ function BoilerPage() {
             </div>
 
 
-            {/* =========================================
-                Tab Content
-                ========================================= */}
-
             <div className="tab-content">
 
                 {tab === "new" && (
 
-                    <BoilerApplicationForm />
+                    <ApplicationForm />
 
                 )}
 
@@ -240,4 +214,4 @@ function BoilerPage() {
 
 }
 
-export default BoilerPage;
+export default HousingPage;
