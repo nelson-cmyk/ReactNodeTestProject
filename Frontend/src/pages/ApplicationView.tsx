@@ -4,7 +4,7 @@ import axios from "axios";
 import "../css/ApplicationView.css";
 
 function ApplicationView() {
-
+    const [actions, setActions] = useState<any[]>([]);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -32,23 +32,26 @@ function ApplicationView() {
                     localStorage.getItem("token");
 
                 const response = await axios.get(
-                    `http://localhost:5000/api/workflow/application/${id}`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        }
-                    }
-                );
+    `http://localhost:5000/api/workflow/application/${id}`,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+);
 
-                console.log(
-                    "Application Response:",
-                    response.data
-                );
+console.log(
+    "Application Response:",
+    response.data
+);
 
-                setApplication(
-                    response.data.application
-                );
+setApplication(
+    response.data.application
+);
+
+setActions(
+    response.data.actions || []
+);
 
             }
             catch (error: any) {
@@ -693,25 +696,70 @@ function ApplicationView() {
             </div>
 
 
-            {/* =====================================
+             {/* =========================================
+            Footer / Workflow Actions
+        ========================================= */}
+
+        <div className="application-view-footer">
+
+            {/* =========================================
+                Workflow Actions
+            ========================================= */}
+
+            {actions.length > 0 && (
+
+                <div className="workflow-actions">
+
+                    <h3>
+                        Actions
+                    </h3>
+
+                    <div className="action-buttons">
+
+                        {actions.map((action) => (
+
+                            <button
+                                key={action.action_id}
+                                type="button"
+                                className="table-action"
+                                onClick={() => {
+
+                                    console.log(
+                                        "Selected Action:",
+                                        action
+                                    );
+
+                                }}
+                            >
+                                {action.action_name}
+                            </button>
+
+                        ))}
+
+                    </div>
+
+                </div>
+
+            )}
+
+
+            {/* =========================================
+                Back Button
+            ========================================= */}
+
+            <button
+                type="button"
+                className="back-button"
+                onClick={() => navigate(-1)}
+            >
                 Back
-            ===================================== */}
-
-            <div className="application-view-footer">
-
-                <button
-                    type="button"
-                    className="back-button"
-                    onClick={() => navigate(-1)}
-                >
-                    Back
-                </button>
-
-            </div>
+            </button>
 
         </div>
 
-    );
+    </div>
+
+);
 
 }
 

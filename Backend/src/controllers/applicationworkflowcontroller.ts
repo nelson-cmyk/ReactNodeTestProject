@@ -99,46 +99,106 @@ export const getPendingApplications = async (
     req: Request,
     res: Response
 ) => {
-    console.log("Fetching pending applications for user:", req.user.id);
+
+    console.log(
+        "Fetching pending applications for user:",
+        req.user.id
+    );
+
     try {
 
         const userId = req.user.id;
 
         const result = await pool.query(
-        `
-        SELECT
-            wt.task_id,
-            wt.application_id,
-            wa.application_no,
-            ah.applicant_name,
-            ah.mobile_number,
-            ah.house_type,
-            wt.assigned_at
-        FROM workflow_tasks wt
-        JOIN workflow_applications wa
-            ON wt.application_id = wa.application_id
-        JOIN applications_housing ah
-            ON ah.id = wt.application_id
-        WHERE wt.assigned_to = $1
-        AND wt.task_status = 'Pending'
-        ORDER BY wt.assigned_at
-        `,
-        [userId]);
+            `
+            SELECT
+                wt.task_id,
+                wt.application_id,
+
+                wa.application_no,
+                wa.workflow_id,
+                wa.application_status,
+                wa.current_state_id,
+                wt.assigned_at,
+
+                /*
+                 * Common applicant information
+                 */
+                COALESCE(
+                    ah.applicant_name,
+                    ba.applicant_name
+                ) AS applicant_name,
+
+                COALESCE(
+                    ah.mobile_number,
+                    ba.mobile_number
+                ) AS mobile_number,
+
+                COALESCE(
+                    ah.address,
+                    ba.address
+                ) AS address,
+
+                /*
+                 * Housing-specific fields
+                 */
+                ah.house_type,
+                ah.annual_income,
+
+                /*
+                 * Boiler-specific fields
+                 */
+                ba.boiler_type,
+                ba.boiler_capacity,
+                ba.year_of_installation,
+                ba.purpose
+
+            FROM workflow_tasks wt
+
+            JOIN workflow_applications wa
+                ON wt.application_id = wa.application_id
+
+            /*
+             * Housing
+             */
+            LEFT JOIN applications_housing ah
+                ON ah.id = wa.application_id
+                AND wa.workflow_id = 1
+
+            /*
+             * Boiler
+             */
+            LEFT JOIN boiler_applications ba
+                ON ba.id = wa.application_id
+                AND wa.workflow_id = 2
+
+            WHERE wt.assigned_to = $1
+
+            AND wt.task_status = 'Pending'
+
+            ORDER BY wt.assigned_at ASC
+            `,
+            [userId]
+        );
 
         res.json(result.rows);
 
     }
-    catch(error){
+    catch (error) {
 
-        console.log(error);
+        console.log(
+            "Pending applications error:",
+            error
+        );
 
         res.status(500).json({
-            message:"Unable to fetch applications"
+            message: "Unable to fetch applications"
         });
 
     }
-
 };
+
+
 
 
 
@@ -287,7 +347,7 @@ export const getApplicationbyId = async (
         // =====================================================
         // 4. Get Available Workflow Actions
         // =====================================================
-
+console.log("Finding available actions for workflowId:", workflowId, "currentStateId:", workflowApplication.current_state_id, "roleId:", roleId);
         const actionResult = await pool.query(
             `
             SELECT
