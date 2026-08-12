@@ -17,7 +17,7 @@ function ApplicationView() {
     const [error, setError] =
         useState("");
 
-
+const [remarks, setRemarks] = useState("");
     // =========================================
     // Load Application
     // =========================================
@@ -174,7 +174,67 @@ setActions(
 
     };
 
+const handleAction = async (action: any) => {
 
+    const token = localStorage.getItem("token");
+
+    try {
+
+        const remarks = window.prompt(
+            `Enter remarks for "${action.action_name}":`
+        );
+
+        // Optional: require remarks for Reject/Cancel
+        if (
+            (action.action_name === "Reject" ||
+             action.action_name === "Cancel") &&
+            !remarks
+        ) {
+            alert("Remarks are required.");
+            return;
+        }
+
+        const response = await axios.post(
+            "http://localhost:5000/api/workflow/action",
+            {
+                application_id: application.application_id,
+                action_id: action.action_id,
+                remarks: remarks || ""
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        console.log(
+            "Workflow Action Response:",
+            response.data
+        );
+
+        alert(response.data.message);
+
+        // Return to previous page after action
+        navigate(-1);
+
+    }
+    catch (error: any) {
+
+        console.log(
+            "Workflow Action Error:",
+            error.response?.data ||
+            error.message
+        );
+
+        alert(
+            error.response?.data?.message ||
+            "Unable to perform action"
+        );
+
+    }
+
+};
     return (
 
         <div className="application-container">
@@ -695,7 +755,12 @@ setActions(
 
             </div>
 
-
+<textarea
+    value={remarks}
+    onChange={(e) => setRemarks(e.target.value)}
+    placeholder="Enter remarks"
+    className="remarks-input"
+/>
              {/* =========================================
             Footer / Workflow Actions
         ========================================= */}
@@ -716,25 +781,19 @@ setActions(
 
                     <div className="action-buttons">
 
-                        {actions.map((action) => (
+                         {actions.map((action) => (
 
-                            <button
-                                key={action.action_id}
-                                type="button"
-                                className="table-action"
-                                onClick={() => {
+        <button
+            key={action.action_id}
+            type="button"
+            className="table-action"
+            onClick={() => handleAction(action)}
+        >
+            {action.action_name}
+        </button>
 
-                                    console.log(
-                                        "Selected Action:",
-                                        action
-                                    );
+    ))}
 
-                                }}
-                            >
-                                {action.action_name}
-                            </button>
-
-                        ))}
 
                     </div>
 

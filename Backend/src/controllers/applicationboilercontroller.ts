@@ -13,6 +13,9 @@ export const createboilerApplication = async (
 
         await client.query("BEGIN");
 
+        // =====================================================
+        // 1. Get Form Data
+        // =====================================================
 
         const {
             applicant_name,
@@ -34,46 +37,44 @@ export const createboilerApplication = async (
                 : null;
 
 
-
         const userId = req.user.id;
 
-        const workflow_id = 2; 
+        const workflowId = 2;
 
+        // Application Draft
         const draftStateId = 10;
 
+        // Submit
         const submitActionId = 1;
 
 
-
-        /*
-            Get Applicant Office
-        */
+        // =====================================================
+        // 2. Get Applicant Office
+        // =====================================================
 
         const officeResult = await client.query(
-        `
-        SELECT o.office_id
-        FROM users u
-        JOIN offices o
-        ON u.district=o.district
-        AND
-        (
-            u.block_id=o.block_id
-            OR
-            (
-                u.block_id IS NULL
-                AND o.block_id IS NULL
-            )
-        )
-        WHERE u.id=$1
-        `,
-        [
-            userId
-        ]);
+            `
+            SELECT o.office_id
+            FROM users u
+            JOIN offices o
+                ON u.district = o.district
+                AND (
+                    u.block_id = o.block_id
+                    OR (
+                        u.block_id IS NULL
+                        AND o.block_id IS NULL
+                    )
+                )
+            WHERE u.id = $1
+            `,
+            [userId]
+        );
 
 
-        if(officeResult.rows.length===0)
-        {
+        if (officeResult.rows.length === 0) {
+
             throw new Error("Office not found");
+
         }
 
 
@@ -81,244 +82,301 @@ export const createboilerApplication = async (
             officeResult.rows[0].office_id;
 
 
+        // =====================================================
+        // 3. Check Existing Draft
+        // =====================================================
 
-        /*
-            Check Existing Draft
-        */
-
-        const existingDraft =
-        await client.query(
-        `
-        SELECT application_id
-        FROM workflow_applications
-        WHERE created_by=$1
-        AND workflow_id=$2
-        AND current_state_id=$3
-        LIMIT 1
-        `,
-        [
-            userId,
-            workflow_id,
-            draftStateId
-        ]);
-
+        const existingDraft = await client.query(
+            `
+            SELECT application_id
+            FROM workflow_applications
+            WHERE created_by = $1
+            AND workflow_id = $2
+            AND current_state_id = $3
+            LIMIT 1
+            `,
+            [
+                userId,
+                workflowId,
+                draftStateId
+            ]
+        );
 
 
-        let applicationId:number;
+        let applicationId: number;
 
 
+        // =====================================================
+        // 4. Update Existing Draft
+        // =====================================================
 
-        /*
-            If Draft exists
-        */
-
-        if(existingDraft.rows.length>0)
-        {
+        if (existingDraft.rows.length > 0) {
 
             applicationId =
                 existingDraft.rows[0].application_id;
 
 
-
             await client.query(
-            `
-            UPDATE boiler_applications
-            SET
-                applicant_name=$1,
-                mobile_number=$2,
-                address=$3,
-                boiler_type=$4,
-                boiler_capacity=$5,
-                year_of_installation=$6,
-                purpose=$7,
-                boiler_certificate=$8
-            WHERE id=$9
-            `,
-            [
-                applicant_name,
-                mobile_number,
-                address,
-                boiler_type,
-                boiler_capacity,
-                year_of_installation,
-                purpose,
-                boilerCertificateFilename,
-                applicationId
-            ]);
+                `
+                UPDATE boiler_applications
+                SET
+                    applicant_name = $1,
+                    mobile_number = $2,
+                    address = $3,
+                    boiler_type = $4,
+                    boiler_capacity = $5,
+                    year_of_installation = $6,
+                    purpose = $7,
+                    boiler_certificate =
+                        COALESCE($8, boiler_certificate)
+                WHERE id = $9
+                `,
+                [
+                    applicant_name,
+                    mobile_number,
+                    address,
+                    boiler_type,
+                    boiler_capacity,
+                    year_of_installation,
+                    purpose,
+                    boilerCertificateFilename,
+                    applicationId
+                ]
+            );
+
 
         }
 
+        // =====================================================
+        // 5. Create New Application
+        // =====================================================
 
+        else {
 
-        /*
-            If no Draft create new application
-        */
-
-        else
-        {
-
-            const application_no =
+            const applicationNo =
                 "APPBoiler-" + Date.now();
 
 
-
             const applicationResult =
-            await client.query(
-            `
-            INSERT INTO workflow_applications
-            (
-                workflow_id,
-                application_no,
-                created_by,
-                office_id,
-                current_state_id,
-                application_status,
-                created_at,
-                updated_at
-            )
-            VALUES
-            (
-                $1,$2,$3,$4,$5,$6,NOW(),NOW()
-            )
-            RETURNING application_id
-            `,
-            [
-                workflow_id,
-                application_no,
-                userId,
-                assignedOffice,
-                draftStateId,
-                "Draft"
-            ]);
-
+                await client.query(
+                    `
+                    INSERT INTO workflow_applications
+                    (
+                        workflow_id,
+                        application_no,
+                        created_by,
+                        office_id,
+                        current_state_id,
+                        application_status,
+                        created_at,
+                        updated_at
+                    )
+                    VALUES
+                    (
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5,
+                        $6,
+                        NOW(),
+                        NOW()
+                    )
+                    RETURNING application_id
+                    `,
+                    [
+                        workflowId,
+                        applicationNo,
+                        userId,
+                        assignedOffice,
+                        draftStateId,
+                        "Draft"
+                    ]
+                );
 
 
             applicationId =
                 applicationResult.rows[0].application_id;
 
 
-
             await client.query(
-            `
-            INSERT INTO boiler_applications
-            (
-                id,
-                applicant_name,
-                mobile_number,
-                address,
-                boiler_type,
-                boiler_capacity,
-                year_of_installation,
-                purpose,
-                boiler_certificate
-            )
-            VALUES
-            ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-            `,
-            [
-                applicationId,
-                applicant_name,
-                mobile_number,
-                address,
-                boiler_type,
-                boiler_capacity,
-                year_of_installation,
-                purpose,
-                boilerCertificateFilename
-                
-            ]);
+                `
+                INSERT INTO boiler_applications
+                (
+                    id,
+                    applicant_name,
+                    mobile_number,
+                    address,
+                    boiler_type,
+                    boiler_capacity,
+                    year_of_installation,
+                    purpose,
+                    boiler_certificate
+                )
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5,
+                    $6,
+                    $7,
+                    $8,
+                    $9
+                )
+                `,
+                [
+                    applicationId,
+                    applicant_name,
+                    mobile_number,
+                    address,
+                    boiler_type,
+                    boiler_capacity,
+                    year_of_installation,
+                    purpose,
+                    boilerCertificateFilename
+                ]
+            );
 
         }
 
 
-// =====================================================
-// 5. Find Current Transition
-// =====================================================
+        // =====================================================
+        // 6. Current State
+        // =====================================================
 
-const fromStateId = draftStateId; // Current state before Submit
+        const currentStateId = draftStateId;
 
-const transitionResult = await client.query(
-`
-SELECT
-    action_id,
-    to_state_id
-FROM workflow_transitions
-WHERE workflow_id = $1
-AND from_state_id = $2
-AND action_id = $3
-`,
-[
-    workflow_id,
-    fromStateId,
-    submitActionId
-]
-);
-
-if (transitionResult.rows.length === 0) {
-    throw new Error("Invalid workflow transition");
-}
-
-const actionId =
-    transitionResult.rows[0].action_id;
-
-const nextStateId =
-    transitionResult.rows[0].to_state_id;
-
-
-// =====================================================
-// 6. Find Role Responsible For Next State
-// =====================================================
-
-const nextRoleResult = await client.query(
-`
-SELECT role_id
-FROM workflow_transitions
-WHERE workflow_id = $1
-AND from_state_id = $2
-LIMIT 1
-`,
-[
-    workflow_id,
-    nextStateId
-]
-);
-
-if (nextRoleResult.rows.length === 0) {
-    throw new Error("Next role not found");
-}
-
-const nextRoleId =
-    nextRoleResult.rows[0].role_id;
-
-
-// =====================================================
-// 7. Find Officer For That Role
-// =====================================================
-
-const assignedToResult = await client.query(
-`
-SELECT id
-FROM users
-WHERE office_id = $1
-AND role_id = $2
-AND is_active = true
-LIMIT 1
-`,
-[
-    assignedOffice,
-    nextRoleId
-]
-);
-
-if (assignedToResult.rows.length === 0) {
-    throw new Error("Officer assigned to not found");
-}
-
-const assignedTo =
-    assignedToResult.rows[0].id;
 
         // =====================================================
-        // 7. Create Workflow Task
+        // 7. Find Submit Transition
+        //
+        // 10 → 11
+        // Submit
+        // Applicant → Verifier
+        // =====================================================
+
+        const transitionResult =
+            await client.query(
+                `
+                SELECT
+                    action_id,
+                    from_state_id,
+                    to_state_id,
+                    role_id,
+                    next_role_id
+                FROM workflow_transitions
+                WHERE workflow_id = $1
+                AND from_state_id = $2
+                AND action_id = $3
+                AND role_id = $4
+                LIMIT 1
+                `,
+                [
+                    workflowId,
+                    currentStateId,
+                    submitActionId,
+                    req.user.role_id
+                ]
+            );
+
+
+        if (transitionResult.rows.length === 0) {
+
+            throw new Error(
+                "Invalid workflow transition"
+            );
+
+        }
+
+
+        const transition =
+            transitionResult.rows[0];
+
+
+        const actionId =
+            transition.action_id;
+
+
+        const nextStateId =
+            transition.to_state_id;
+
+
+        const nextRoleId =
+            transition.next_role_id;
+
+
+        console.log(
+            "Current State:",
+            currentStateId
+        );
+
+        console.log(
+            "Next State:",
+            nextStateId
+        );
+
+        console.log(
+            "Current Role:",
+            transition.role_id
+        );
+
+        console.log(
+            "Next Role:",
+            nextRoleId
+        );
+
+
+        // =====================================================
+        // 8. Validate Next Role
+        // =====================================================
+
+        if (!nextRoleId) {
+
+            throw new Error(
+                "Next role is not configured for this transition"
+            );
+
+        }
+
+
+        // =====================================================
+        // 9. Find Officer For Next Role
+        // =====================================================
+
+        const assignedToResult =
+            await client.query(
+                `
+                SELECT id
+                FROM users
+                WHERE office_id = $1
+                AND role_id = $2
+                AND is_active = true
+                LIMIT 1
+                `,
+                [
+                    assignedOffice,
+                    nextRoleId
+                ]
+            );
+
+
+        if (assignedToResult.rows.length === 0) {
+
+            throw new Error(
+                "Officer assigned to next role not found"
+            );
+
+        }
+
+
+        const assignedTo =
+            assignedToResult.rows[0].id;
+
+
+        // =====================================================
+        // 10. Create Workflow Task
         // =====================================================
 
         const taskResult =
@@ -356,11 +414,13 @@ const assignedTo =
                 ]
             );
 
+
         const taskId =
             taskResult.rows[0].task_id;
 
+
         // =====================================================
-        // 8. Create Workflow History
+        // 11. Workflow History
         // =====================================================
 
         await client.query(
@@ -395,8 +455,8 @@ const assignedTo =
             [
                 applicationId,
                 taskId,
-                10,
-                2,
+                currentStateId,
+                nextStateId,
                 actionId,
                 assignedOffice,
                 userId,
@@ -405,8 +465,9 @@ const assignedTo =
             ]
         );
 
+
         // =====================================================
-        // 9. Update Current State
+        // 12. Update Application State
         // =====================================================
 
         await client.query(
@@ -425,38 +486,63 @@ const assignedTo =
             ]
         );
 
-        
 
         // =====================================================
-        // 10. Commit Transaction
+        // 13. Commit
         // =====================================================
 
         await client.query("COMMIT");
 
+
         res.status(201).json({
-            message: "Application Submitted Successfully",
-            applicationId
+
+            message:
+                "Application Submitted Successfully",
+
+            applicationId,
+
+            applicationNo:
+                "APPBoiler-" + applicationId,
+
+            currentStateId,
+
+            nextStateId,
+
+            nextRoleId,
+
+            assignedTo,
+
+            taskId
+
         });
 
-    } catch (error) {
+    }
+    catch (error: any) {
 
         await client.query("ROLLBACK");
 
-        console.log(error);
+        console.log(
+            "Boiler application submission error:",
+            error
+        );
+
 
         res.status(500).json({
-            message: "Application submission failed"
+
+            message:
+                error.message ||
+                "Application submission failed"
+
         });
 
-    } finally {
+    }
+    finally {
 
         client.release();
 
     }
 
 };
-
-
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //++++++++++++++++++++++++++++++++//Save Draft API//+++++++++++++++++++++++++++++++++++++++++++++++++++//
