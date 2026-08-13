@@ -784,7 +784,8 @@ export const getDraftboiler = async (
     try {
         console.log("Fetching draft application with ID:", req.params.id);
         const userId = req.user.id;
-
+const workflowId = 2;
+const draftStateId = 10;
         const result = await pool.query(
         `
         SELECT
@@ -793,11 +794,11 @@ export const getDraftboiler = async (
         JOIN boiler_applications ah
         ON wa.application_id = ah.id
         WHERE wa.created_by = $1
-        AND wa.workflow_id = 2
-        AND wa.current_state_id = 1
+        AND wa.workflow_id = $2
+        AND wa.current_state_id = $3
         LIMIT 1
         `,
-        [userId]);
+        [userId, workflowId, draftStateId]);
 
         if(result.rows.length === 0){
 
