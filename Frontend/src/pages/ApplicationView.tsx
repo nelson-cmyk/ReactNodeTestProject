@@ -1,133 +1,124 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/ApplicationView.css";
 
 function ApplicationView() {
-    const [actions, setActions] = useState<any[]>([]);
     const { id } = useParams();
     const navigate = useNavigate();
-
-    const [application, setApplication] =
-        useState<any>(null);
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState("");
+    const queryClient = useQueryClient();
 
 const [remarks, setRemarks] = useState("");
     // =========================================
     // Load Application
     // =========================================
+const fetchApplication = async () => {
 
-    useEffect(() => {
+    const token = localStorage.getItem("token");
 
-        const loadApplication = async () => {
-
-            try {
-
-                const token =
-                    localStorage.getItem("token");
-
-                const response = await axios.get(
-    `http://localhost:5000/api/workflow/application/${id}`,
-    {
-        headers: {
-            Authorization: `Bearer ${token}`
+    const response = await axios.get(
+        `http://localhost:5000/api/workflow/application/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         }
-    }
-);
+    );
 
-console.log(
-    "Application Response:",
-    response.data
-);
+    console.log(
+        "Application Response:",
+        response.data
+    );
 
-setApplication(
-    response.data.application
-);
+    return response.data;
+};
+   
+const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch
+} = useQuery({
 
-setActions(
-    response.data.actions || []
-);
+    queryKey: [
+        "application",
+        id
+    ],
 
-            }
-            catch (error: any) {
+    queryFn: fetchApplication,
 
-                console.log(
-                    "Application View Error:",
-                    error.response?.data ||
-                    error.message
-                );
+    enabled: !!id,
 
-                setError(
-                    error.response?.data?.message ||
-                    "Unable to load application"
-                );
-
-            }
-            finally {
-
-                setLoading(false);
-
-            }
-
-        };
+});
 
 
-        if (id) {
-            loadApplication();
-        }
+    // =====================================================
+    // Data
+    // =====================================================
 
-    }, [id]);
+    const application =
+        data?.application || null;
 
+    const actions =
+        data?.actions || [];
 
     // =========================================
     // Loading
     // =========================================
 
-    if (loading) {
-
+    if (isLoading) {
         return (
             <div className="application-container">
-
                 <h2>Application Details</h2>
-
                 <p>Loading application...</p>
-
             </div>
         );
-
     }
-
 
     // =========================================
     // Error
     // =========================================
 
-    if (error) {
+    if (isError) {
 
-        return (
-            <div className="application-container">
+    console.error(
+        "Application View Error:",
+        error
+    );
 
-                <h2>Application Details</h2>
+    return (
+        <div className="application-container">
 
-                <p>{error}</p>
+            <h2>
+                Application Details
+            </h2>
 
-                <button
-                    type="button"
-                    onClick={() => navigate(-1)}
-                >
-                    Back
-                </button>
+            <p>
+                Unable to load application.
+            </p>
 
-            </div>
-        );
+            <button
+                type="button"
+                onClick={() => refetch()}
+            >
+                Retry
+            </button>
 
-    }
+            <button
+                type="button"
+                onClick={() => navigate(-1)}
+            >
+                Back
+            </button>
 
+        </div>
+    );
+}
+// =====================================================
+    // No Application
+    // =====================================================
 
     if (!application) {
 
@@ -151,10 +142,9 @@ setActions(
     }
 
 
-    // =========================================
-    // Helper
-    // =========================================
-
+    // =====================================================
+    // Date Formatter
+    // =====================================================
     const formatDate = (date: string) => {
 
         if (!date) {
@@ -174,48 +164,78 @@ setActions(
 
     };
 
+
+    // =====================================================
+    // Workflow Action
+    // =====================================================
+
 const handleAction = async (action: any) => {
 
-    const token = localStorage.getItem("token");
+    const token =
+        localStorage.getItem("token");
 
     try {
 
-        const remarks = window.prompt(
-            `Enter remarks for "${action.action_name}":`
-        );
-
-        // Optional: require remarks for Reject/Cancel
         if (
             (action.action_name === "Reject" ||
              action.action_name === "Cancel") &&
-            !remarks
+            !remarks.trim()
         ) {
-            alert("Remarks are required.");
+
+            alert(
+                "Remarks are required."
+            );
+
             return;
         }
 
-        const response = await axios.post(
-            "http://localhost:5000/api/workflow/action",
-            {
-                application_id: application.application_id,
-                action_id: action.action_id,
-                remarks: remarks || ""
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
+        const response =
+            await axios.post(
+                "http://localhost:5000/api/workflow/action",
+                {
+                    application_id:
+                        application.application_id,
+
+                    action_id:
+                        action.action_id,
+
+                    remarks:
+                        remarks.trim()
+                },
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
                 }
-            }
-        );
+            );
 
         console.log(
             "Workflow Action Response:",
             response.data
         );
 
-        alert(response.data.message);
+        alert(
+            response.data.message
+        );
 
-        // Return to previous page after action
+        // Remove old cached application
+        queryClient.invalidateQueries({
+            queryKey: [
+                "application",
+                id
+            ]
+        });
+
+        // Also invalidate lists
+        queryClient.invalidateQueries({
+            queryKey: ["drafts"]
+        });
+
+        queryClient.invalidateQueries({
+            queryKey: ["submitted"]
+        });
+
         navigate(-1);
 
     }
@@ -233,7 +253,6 @@ const handleAction = async (action: any) => {
         );
 
     }
-
 };
     return (
 

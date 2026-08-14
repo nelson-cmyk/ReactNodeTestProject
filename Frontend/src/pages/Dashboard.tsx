@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/Dashboard.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Dashboard() {
+     console.log("1. DASHBOARD LOADED");
 const [stats,setStats] = useState({
 
     total:0,
@@ -11,47 +13,81 @@ const [stats,setStats] = useState({
     completed:0
 
 });
-
+     const queryClient = useQueryClient();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    useEffect(()=>{
+    useEffect(() => {
 
-    const loadDashboard = async()=>{
-
-        try{
+        const prefetchApplicantApplications = async () => {
 
             const token =
                 localStorage.getItem("token");
 
-            const response =
-                await axios.get(
-                    "http://localhost:5000/api/dashboard",
-                    {
-                        headers:{
-                            Authorization:
-                            `Bearer ${token}`
-                        }
-                    }
-                );
+            const userString =
+                localStorage.getItem("user");
 
-            setStats(response.data);
+            if (!token || !userString) {
+                return;
+            }
 
-        }
-        catch(error){
+            const user =
+                JSON.parse(userString);
 
-            console.log(error);
+            // Applicant only
+            if (Number(user.role_id) !== 4) {
+                return;
+            }
 
-        }
+            console.log(
+                "Prefetching applicant applications..."
+            );
 
-    };
+            await queryClient.prefetchQuery({
 
-    loadDashboard();
+                queryKey: [
+                    "applicant-applications",
+                    user.id
+                ],
 
-},[]);
+                queryFn: async () => {
+
+                    const response =
+                        await axios.get(
+                            "http://localhost:5000/api/applications/my-applications",
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ${token}`
+                                }
+                            }
+                        );
+
+                    console.log(
+                        "Applicant applications prefetched:",
+                        response.data
+                    );
+
+                    return response.data;
+                },
+
+                staleTime: 30 * 1000,
+
+                gcTime: 5 * 60 * 1000
+
+            });
+
+        };
+
+        prefetchApplicantApplications();
+
+    }, [queryClient]);
+
 
     return (
+        <div>
+            <h2>Dashboard</h2>
 
-        <div className="dashboard">
+            <div className="dashboard">
 
             <div className="dashboard-header">
                 <h2>Welcome {user.username}</h2>
@@ -132,8 +168,12 @@ const [stats,setStats] = useState({
 
         </div>
 
+        </div>
     );
-
 }
 
 export default Dashboard;
+
+
+        
+

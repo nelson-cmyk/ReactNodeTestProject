@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import "../css/ApplicationStatus.css";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 function ApplicationStatus() {
-
+    const queryClient = useQueryClient();
     const [applicationNo, setApplicationNo] = useState("");
     const [application, setApplication] = useState<any>(null);
     const [error, setError] = useState("");
@@ -11,49 +13,154 @@ function ApplicationStatus() {
 
     const checkStatus = async () => {
 
-        if (!applicationNo.trim()) {
-            setError("Please enter application number");
-            return;
-        }
+    const searchNo = applicationNo.trim();
 
-        setLoading(true);
-        setError("");
-        setApplication(null);
+    if (!searchNo) {
+        setError("Please enter application number");
+        return;
+    }
+
+
+
+    
+    setLoading(true);
+    setError("");
+    setApplication(null);
+
+    try {
+
         const token =
             localStorage.getItem("token");
 
-        try {
+        const userString =
+            localStorage.getItem("user");
 
-            const response = await axios.get(
-                `http://localhost:5000/api/application-status/${applicationNo.trim()}`,
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
+        const user =
+            userString
+                ? JSON.parse(userString)
+                : null;
+
+
+        // =====================================================
+        // APPLICANT
+        // Use prefetched React Query cache
+        // =====================================================
+console.log("User role:", user?.role_id);
+        if (user?.role_id === 4) {
+
+            const cachedApplications =
+                queryClient.getQueryData<any[]>(
+                    ["applicant-applications", user.id]
+                );
+
+            console.log(
+                "Applicant cache:",
+                cachedApplications
+            );
+
+
+            if (cachedApplications) {
+
+                const cachedApplication =
+                    cachedApplications.find(
+                        (app) =>
+                            app.application_no ===
+                            searchNo
+                    );
+
+
+                if (cachedApplication) {
+
+                    console.log(
+                        "Application found in CACHE"
+                    );
+
+                    setApplication(
+                        cachedApplication
+                    );
+
+                    setLoading(false);
+
+                    return;
                 }
+
+
+                // Cache exists but application wasn't found
+                console.log(
+                    "Application not found in CACHE"
+                );
+
+                setError(
+                    "Application not found"
+                );
+
+                setLoading(false);
+
+                return;
+            }
+
+
+            // =================================================
+            // Cache does not exist
+            // Fallback to API
+            // =================================================
+
+            console.log(
+                "Applicant cache does not exist. Calling API..."
             );
 
-            setApplication(response.data);
-
-        }
-        catch (error: any) {
-
-            console.error(error);
-
-            setError(
-                error.response?.data?.message ||
-                "Unable to check application status"
-            );
-
-        }
-        finally {
-
-            setLoading(false);
-
         }
 
-    };
+
+        // =====================================================
+        // VERIFIER / OTHER ROLES
+        // Always query API
+        // =====================================================
+
+        console.log(
+            "Fetching application from API..."
+        );
+
+
+        const response = await axios.get(
+            `http://localhost:5000/api/application-status/${searchNo}`,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+
+        console.log(
+            "Application fetched from API:",
+            response.data
+        );
+
+
+        setApplication(
+            response.data
+        );
+
+    }
+    catch (error: any) {
+
+        console.error(error);
+
+        setError(
+            error.response?.data?.message ||
+            "Unable to check application status"
+        );
+
+    }
+    finally {
+
+        setLoading(false);
+
+    }
+
+};
 
     return (
         <div className="application-status-container">
