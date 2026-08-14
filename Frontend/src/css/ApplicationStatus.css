@@ -1,0 +1,228 @@
+/* =========================================
+   Application Status Container
+========================================= */
+
+.application-status-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* =========================================
+   Page Heading
+========================================= */
+
+.application-status-container h2 {
+    margin: 0 0 25px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* =========================================
+   Search Section
+========================================= */
+
+.status-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   Application Number Input
+========================================= */
+
+.status-search input {
+    flex: 1;
+
+    height: 40px;
+    padding: 8px 12px;
+
+    border: 1px solid #bbb;
+    border-radius: 4px;
+
+    font-size: 14px;
+    color: #333;
+
+    box-sizing: border-box;
+}
+
+.status-search input:focus {
+    outline: none;
+    border-color: #666;
+}
+
+/* =========================================
+   Check Status Button
+========================================= */
+
+.status-search button {
+    height: 40px;
+
+    padding: 0 18px;
+
+    border: 1px solid #333;
+    border-radius: 4px;
+
+    background: #333;
+    color: #fff;
+
+    font-size: 14px;
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+.status-search button:hover {
+    background: #222;
+}
+
+.status-search button:disabled {
+    background: #999;
+    border-color: #999;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   Error Message
+========================================= */
+
+.status-error {
+    margin: 15px 0;
+    padding: 12px 15px;
+
+    border: 1px solid #e0b4b4;
+    border-radius: 4px;
+
+    background: #fff5f5;
+    color: #b00020;
+
+    font-size: 14px;
+}
+
+/* =========================================
+   Status Result
+========================================= */
+
+.status-result {
+    margin-top: 25px;
+
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+    background: #fafafa;
+    overflow: hidden;
+}
+
+/* =========================================
+   Result Heading
+========================================= */
+
+.status-result h3 {
+    margin: 0;
+
+    padding: 14px 18px;
+
+    border-bottom: 1px solid #ddd;
+
+    background: #f3f3f3;
+
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* =========================================
+   Status Rows
+========================================= */
+
+.status-row {
+    display: flex;
+    align-items: center;
+
+    min-height: 48px;
+
+    padding: 8px 18px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    box-sizing: border-box;
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+/* =========================================
+   Labels
+========================================= */
+
+.status-row strong {
+    width: 220px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #444;
+}
+
+/* =========================================
+   Values
+========================================= */
+
+.status-row span {
+    flex: 1;
+
+    font-size: 14px;
+    color: #333;
+}
+
+/* =========================================
+   Mobile Responsive
+========================================= */
+
+@media (max-width: 600px) {
+
+    .application-status-container {
+        width: 95%;
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .status-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .status-search input,
+    .status-search button {
+        width: 100%;
+    }
+
+    .status-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 12px 15px;
+    }
+
+    .status-row strong {
+        width: 100%;
+    }
+
+    .status-row span {
+        width: 100%;
+    }
+}

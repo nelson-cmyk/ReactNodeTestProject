@@ -21,6 +21,10 @@ import EServices from "./pages/EServices";
 
  import ApplicationEdit from "./pages/ApplicationEdit";
  import ApplicationView from "./pages/ApplicationView";
+
+ import ApplicationStatus from "./pages/ApplicationStatus";
+import WorkflowApplicationHistory
+    from "./pages/ApplicationHistory";
 function App() {
   return (
     <div>
@@ -82,8 +86,16 @@ element={<BoilerPage/>}
         />
       </Route>
 
-        
-          
+      <Route
+    path="/application-status"
+    element={<ApplicationStatus />}
+/>  
+     <Route
+    path="/workflow-application-history"
+    element={
+        <WorkflowApplicationHistory />
+    }
+/>     
 
         </Routes>
       </main>

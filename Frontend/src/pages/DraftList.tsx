@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import {
+    useQuery
+} from "@tanstack/react-query";
 import "../css/Tables.css";
 
 interface Props {
@@ -10,21 +12,9 @@ interface Props {
 
 function DraftList({ workflowId }: Props) {
 
-    const [drafts, setDrafts] = useState<any[]>([]);
-
-    const [loading, setLoading] = useState(true);
-
-
-    useEffect(() => {
-
-        loadDrafts();
-
-    }, [workflowId]);
 
 
     const loadDrafts = async () => {
-
-        try {
             
             const token = localStorage.getItem("token");
 
@@ -39,22 +29,27 @@ function DraftList({ workflowId }: Props) {
 
             console.log("Draft API Response:", response.data);
 
-            setDrafts(response.data);
+            return response.data;
 
-        } catch (error) {
+        }; 
 
-            console.error("Error loading drafts:", error);
+const {
+    data: drafts = [],
+    isLoading,
+    isError,
+    refetch
+} = useQuery({
 
-        } finally {
+    queryKey: [
+        "drafts",
+        workflowId
+    ],
 
-            setLoading(false);
+    queryFn: loadDrafts,
 
-        }
+});
 
-    };
-
-
-    if (loading) {
+    if (isLoading) {
 
         return (
             <div>
@@ -63,14 +58,48 @@ function DraftList({ workflowId }: Props) {
         );
 
     }
+// =========================================
+    // Error
+    // =========================================
 
+    if (isError) {
+
+        console.error(
+            "Draft loading error:",
+            isError
+        );
+
+        return (
+            <div className="application-container">
+
+                <p>
+                    Unable to load drafts.
+                </p>
+
+                <button
+                    type="button"
+                    onClick={() => refetch()}
+                >
+                    Retry
+                </button>
+
+            </div>
+        );
+
+    }
+   // =========================================
+    // No Drafts
+    // =========================================
 
     if (drafts.length === 0) {
 
         return (
-            <div className="empty-state">
-                <h4>No Draft Applications</h4>
-                <p>You currently have no saved draft applications.</p>
+            <div className="application-container">
+
+                <p>
+                    No draft applications found.
+                </p>
+
             </div>
         );
 

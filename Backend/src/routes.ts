@@ -25,6 +25,9 @@ import { createboilerApplication } from "./controllers/applicationboilercontroll
 import { saveDraftboiler } from "./controllers/applicationboilercontroller";
 import { getDraftboiler } from "./controllers/applicationboilercontroller";
 
+
+import { getApplicationStatus } from "./controllers/applicationstatuscontroller";
+import { getApplicationHistory } from "./controllers/applicationhistorycontroller";
 const router = express.Router();
 
 
@@ -182,4 +185,19 @@ router.get(
     getApplicationbyId
 
 );
+
+//Application Status Route
+router.get(
+    "/application-status/:application_no",
+     verifyToken,
+    getApplicationStatus
+);
+
+router.get(
+    "/workflow-application-history/:application_no",
+        verifyToken,
+    getApplicationHistory
+);
+     
+    
 export default router;
