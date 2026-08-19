@@ -1,18 +1,5 @@
 //As per boiler application form
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    TextField,
-    Typography,
-} from "@mui/material";
+
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -353,237 +340,240 @@ const submitForm = async (e: any) => {
 
 
 
-
-
 return (
-    <Box
-        sx={{
-            maxWidth: 900,
-            mx: "auto",
-            p: 3,
-        }}
-    >
-        <Card elevation={2}>
 
-            <CardHeader
-                title="Boiler Inspection Application"
-            />
+<div className="application-container">
 
-            <CardContent>
 
-                <Box
-                    component="form"
-                    onSubmit={submitForm}
-                >
+<h2>
+Boiler Inspection Application
+</h2>
 
-                    <Stack spacing={3}>
 
-                        {/* Applicant Name */}
-                        <TextField
-                            label="Applicant Name"
-                            name="applicant_name"
-                            value={formData.applicant_name}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                        />
 
-                        {/* Mobile Number */}
-                        <TextField
-                            label="Mobile Number"
-                            name="mobile_number"
-                            value={formData.mobile_number}
-                            onChange={handleChange}
-                            inputProps={{
-                                maxLength: 10,
-                            }}
-                            fullWidth
-                            required
-                        />
+<form onSubmit={submitForm}>
 
-                        {/* Address */}
-                        <TextField
-                            label="Address"
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            multiline
-                            rows={3}
-                            fullWidth
-                            required
-                        />
 
-                        {/* Boiler Type */}
-                        <FormControl fullWidth required>
+<label>
+Applicant Name
+</label>
 
-                            <InputLabel>
-                                Boiler Type
-                            </InputLabel>
+<input
 
-                            <Select
-                                name="boiler_type"
-                                value={formData.boiler_type}
-                                label="Boiler Type"
-                                onChange={handleChange}
-                            >
+name="applicant_name"
 
-                                <MenuItem value="">
-                                    Select
-                                </MenuItem>
+value={formData.applicant_name}
 
-                                <MenuItem value="Steam Boiler">
-                                    Steam Boiler
-                                </MenuItem>
+onChange={handleChange}
 
-                                <MenuItem value="Hot Water Boiler">
-                                    Hot Water Boiler
-                                </MenuItem>
+/>
 
-                                <MenuItem value="Industrial Boiler">
-                                    Industrial Boiler
-                                </MenuItem>
 
-                            </Select>
 
-                        </FormControl>
+<label>
+Mobile Number
+</label>
 
-                        {/* Boiler Capacity */}
-                        <TextField
-                            label="Boiler Capacity (TPH)"
-                            type="number"
-                            name="boiler_capacity"
-                            value={formData.boiler_capacity}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                        />
 
-                        {/* Year of Installation */}
-                        <TextField
-                            label="Year of Installation"
-                            type="number"
-                            name="year_of_installation"
-                            value={formData.year_of_installation}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                        />
+<input
 
-                        {/* Purpose */}
-                        <TextField
-                            label="Purpose"
-                            name="purpose"
-                            value={formData.purpose}
-                            onChange={handleChange}
-                            multiline
-                            rows={3}
-                            fullWidth
-                            required
-                        />
+name="mobile_number"
 
-                        {/* Boiler Certificate */}
-                        <Box>
+maxLength={10}
 
-                            <Typography
-                                variant="subtitle1"
-                                fontWeight={600}
-                                gutterBottom
-                            >
-                                Upload Boiler Certificate
-                            </Typography>
+value={formData.mobile_number}
 
-                            {/* Existing Certificate */}
-                            {existingCertificate && (
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 2,
-                                        p: 2,
-                                        mb: 2,
-                                        border: "1px solid",
-                                        borderColor: "divider",
-                                        borderRadius: 1,
-                                        backgroundColor: "background.default",
-                                    }}
-                                >
+onChange={handleChange}
 
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            flexGrow: 1,
-                                            wordBreak: "break-word",
-                                        }}
-                                    >
-                                        {existingCertificate}
-                                    </Typography>
+/>
 
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        component="a"
-                                        href={`http://localhost:5000/uploads/${existingCertificate}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        View Certificate
-                                    </Button>
 
-                                </Box>
-                            )}
 
-                            {/* File Upload */}
-                            <Button
-                                variant="outlined"
-                                component="label"
-                            >
-                                Choose Certificate
+<label>
+Address
+</label>
 
-                                <input
-                                    type="file"
-                                    name="boiler_certificate"
-                                    hidden
-                                    onChange={handleFile}
-                                />
-                            </Button>
 
-                        </Box>
+<textarea
 
-                        {/* Buttons */}
-                        <Stack
-                            direction={{
-                                xs: "column",
-                                sm: "row",
-                            }}
-                            spacing={2}
-                            justifyContent="flex-end"
-                        >
+name="address"
 
-                            <Button
-                                type="button"
-                                variant="outlined"
-                                onClick={saveDraft}
-                            >
-                                Save Draft
-                            </Button>
+value={formData.address}
 
-                            <Button
-                                type="submit"
-                                variant="contained"
-                            >
-                                Submit Application
-                            </Button>
+onChange={handleChange}
 
-                        </Stack>
+/>
 
-                    </Stack>
 
-                </Box>
 
-            </CardContent>
+<label>
+Boiler Type
+</label>
 
-        </Card>
-    </Box>
-)
+
+<select
+
+name="boiler_type"
+
+value={formData.boiler_type}
+
+onChange={handleChange}
+
+>
+
+
+<option value="">
+Select
+</option>
+
+
+<option>
+Steam Boiler
+</option>
+
+
+<option>
+Hot Water Boiler
+</option>
+
+
+<option>
+Industrial Boiler
+</option>
+
+
+</select>
+
+
+
+
+
+<label>
+Boiler Capacity (TPH)
+</label>
+
+
+<input
+
+type="number"
+
+name="boiler_capacity"
+
+value={formData.boiler_capacity}
+
+onChange={handleChange}
+
+/>
+
+
+
+
+
+<label>
+Year of Installation
+</label>
+
+
+<input
+
+type="number"
+
+name="year_of_installation"
+
+value={formData.year_of_installation}
+
+onChange={handleChange}
+
+/>
+
+
+
+
+
+<label>
+Purpose
+</label>
+
+
+<textarea
+
+name="purpose"
+
+value={formData.purpose}
+
+onChange={handleChange}
+
+/>
+
+
+
+
+
+<label>Upload Boiler Certificate</label>
+
+{existingCertificate && (
+    <div className="existing-file-container">
+        <span className="file-name">
+            {existingCertificate}
+        </span>
+
+        <a
+            href={`http://localhost:5000/uploads/${existingCertificate}`}
+            target="_blank"
+            rel="noreferrer"
+            className="view-file-button"
+        >
+            View Certificate
+        </a>
+    </div>
+)}
+
+<input
+    type="file"
+    name="boiler_certificate"
+    onChange={handleFile}
+/>
+
+
+
+
+
+<button
+
+type="button"
+
+onClick={saveDraft}
+
+>
+
+Save Draft
+
+</button>
+
+
+
+<button
+
+type="submit"
+
+>
+
+Submit Application
+
+</button>
+
+
+
+</form>
+
+
+
+</div>
+
+);
+
+
+}
+
 
 export default BoilerApplicationForm;
