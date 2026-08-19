@@ -1,44 +1,79 @@
 //As per boiler application form
 
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/ApplicationForm.css";
 import { useNavigate } from "react-router-dom";
+import { type BoilerFormData } from "../../../shared/schemas/boilerSchema";
+
+import {
+    validateBoilerForm,
+    type BoilerFormErrors,
+} from "../validation/ApplicationFormBoilerValidation";
 
 interface BoilerApplicationFormProps {
     applicationId?: string;
 }
 
+interface BoilerFiles {
+    boiler_certificate?: File;
+}
+
 function BoilerApplicationForm({ applicationId }: BoilerApplicationFormProps) {
-const [formData,setFormData] = useState<any>({
+const [formData, setFormData] =
+    useState<BoilerFormData>({
+        applicant_name: "",
+        mobile_number: "",
+        address: "",
+        boiler_type: "",
+        boiler_capacity: "",
+        year_of_installation: "",
+        purpose: "",
+    });
 
-    applicant_name:"",
-    mobile_number:"",
-    address:"",
-    boiler_type:"",
-    boiler_capacity:"",
-    year_of_installation:"",
-    purpose:""
-
-});
-
+const [errors, setErrors] =
+    useState<BoilerFormErrors>({});
 const navigate = useNavigate();
-const [files,setFiles]=useState<any>({});
+const [files, setFiles] = useState<BoilerFiles>({});
 
 const [existingCertificate, setExistingCertificate] =
     useState<string>("");
 
-const handleChange=(e:any)=>{
+const handleChange = (
+    e: React.ChangeEvent<
+        HTMLInputElement |
+        HTMLTextAreaElement |
+        HTMLSelectElement
+    >
+) => {
 
-    setFormData({
+    const { name, value } = e.target;
+// =========================================
+    // Mobile number: allow digits only
+    // =========================================
+ console.log(
+        "HANDLE CHANGE:",
+        name,
+        value,
+        typeof value
+    );
 
-        ...formData,
+    if (name === "mobile_number") {
 
-        [e.target.name]:e.target.value
+        if (!/^\d*$/.test(value)) {
+            return;
+        }
 
-    });
+    }
+    setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+    }));
 
+    setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+    }));
 };
 
 
@@ -122,30 +157,28 @@ useEffect(() => {
             );
 
 
-            setFormData({
+          setFormData({
+    applicant_name:
+        String(application.applicant_name ?? ""),
 
-                applicant_name:
-                    application.applicant_name ?? "",
+    mobile_number:
+        String(application.mobile_number ?? ""),
 
-                mobile_number:
-                    application.mobile_number ?? "",
+    address:
+        String(application.address ?? ""),
 
-                address:
-                    application.address ?? "",
+    boiler_type:
+        String(application.boiler_type ?? ""),
 
-                boiler_type:
-                    application.boiler_type ?? "",
+    boiler_capacity:
+        String(application.boiler_capacity ?? ""),
 
-                boiler_capacity:
-                    application.boiler_capacity ?? "",
+    year_of_installation:
+        String(application.year_of_installation ?? ""),
 
-                year_of_installation:
-                    application.year_of_installation ?? "",
-
-                purpose:
-                    application.purpose ?? ""
-
-            });
+    purpose:
+        String(application.purpose ?? "")
+});
 setExistingCertificate(
     application.boiler_certificate ?? ""
 );
@@ -166,33 +199,47 @@ setExistingCertificate(
 
 }, [applicationId]);
 
+const handleFile = (
+    e: React.ChangeEvent<HTMLInputElement>
+) => {
 
-const handleFile=(e:any)=>{
+    const file = e.target.files?.[0];
+
+    if (!file) {
+        return;
+    }
 
     setFiles({
-
-        ...files,
-
-        [e.target.name]:e.target.files[0]
-
+        boiler_certificate: file
     });
 
+    setErrors((prev) => ({
+        ...prev,
+        boiler_certificate: ""
+    }));
 };
-
 
 const saveDraft = async () => {
 
+    // =========================================
+    // 1. Create FormData
+    // =========================================
+
     const data = new FormData();
 
-    Object.keys(formData).forEach(key => {
+    (Object.keys(formData) as Array<keyof BoilerFormData>)
+        .forEach((key) => {
 
-        data.append(
-            key,
-            formData[key]
-        );
+            data.append(
+                key,
+                formData[key]
+            );
 
-    });
+        });
 
+    // =========================================
+    // 2. Existing application/draft ID
+    // =========================================
 
     if (applicationId) {
 
@@ -203,6 +250,9 @@ const saveDraft = async () => {
 
     }
 
+    // =========================================
+    // 3. Certificate
+    // =========================================
 
     if (files.boiler_certificate) {
 
@@ -213,6 +263,9 @@ const saveDraft = async () => {
 
     }
 
+    // =========================================
+    // 4. Send draft to backend
+    // =========================================
 
     try {
 
@@ -225,9 +278,7 @@ const saveDraft = async () => {
             {
                 headers: {
                     Authorization:
-                        `Bearer ${token}`,
-                    "Content-Type":
-                        "multipart/form-data"
+                        `Bearer ${token}`
                 }
             }
         );
@@ -237,7 +288,9 @@ const saveDraft = async () => {
             response.data
         );
 
-        alert(response.data.message);
+        alert(
+            response.data.message
+        );
 
     }
     catch (error: any) {
@@ -248,31 +301,102 @@ const saveDraft = async () => {
             error.message
         );
 
-        alert("Draft save failed");
+        alert(
+            "Draft save failed"
+        );
 
     }
-
 };
 
 
 
-const submitForm = async (e: any) => {
+const submitForm = async (
+    e: React.FormEvent<HTMLFormElement>
+) => {
 
     e.preventDefault();
+console.log(
+        "FORM DATA:",
+        formData
+    );
+
+    console.log(
+        "SELECTED FILE:",
+        files.boiler_certificate
+    );
+
+    console.log(
+        "EXISTING CERTIFICATE:",
+        existingCertificate
+    );
+console.log("FORM DATA BEFORE VALIDATION:", formData);
+
+console.log(
+    "YEAR VALUE:",
+    formData.year_of_installation
+);
+console.log(
+    "YEAR TYPE:",
+    typeof formData.year_of_installation
+);
+    // =========================================
+    // 1. Validate form
+    // =========================================
+
+    const validationErrors =
+        validateBoilerForm(
+            formData,
+            files.boiler_certificate,
+            existingCertificate
+        );
+ console.log(
+        "VALIDATION ERRORS:",
+        validationErrors
+    );
+    // =========================================
+    // 2. Display validation errors
+    // =========================================
+
+    if (Object.keys(validationErrors).length > 0) {
+
+        setErrors(validationErrors);
+          
+        // Show first validation error
+    alert(
+        Object.values(validationErrors)[0]
+    );
+
+        return;
+    }
+
+    // Validation successful
+    setErrors({});
+
+    console.log(
+        "Validation successful:",
+        formData
+    );
+
+    // =========================================
+    // 3. Create FormData
+    // =========================================
 
     const data = new FormData();
 
-    Object.keys(formData).forEach(key => {
+    (Object.keys(formData) as Array<keyof BoilerFormData>)
+        .forEach((key) => {
 
-        data.append(
-            key,
-            formData[key]
-        );
+            data.append(
+                key,
+                formData[key]
+            );
 
-    });
+        });
 
+    // =========================================
+    // 4. Existing application/draft ID
+    // =========================================
 
-    // Existing draft/application
     if (applicationId) {
 
         data.append(
@@ -282,6 +406,9 @@ const submitForm = async (e: any) => {
 
     }
 
+    // =========================================
+    // 5. Certificate
+    // =========================================
 
     if (files.boiler_certificate) {
 
@@ -292,6 +419,9 @@ const submitForm = async (e: any) => {
 
     }
 
+    // =========================================
+    // 6. Submit to backend
+    // =========================================
 
     try {
 
@@ -304,9 +434,9 @@ const submitForm = async (e: any) => {
             {
                 headers: {
                     Authorization:
-                        `Bearer ${token}`,
-                    "Content-Type":
-                        "multipart/form-data"
+                        `Bearer ${token}`
+ 
+               
                 }
             }
         );
@@ -319,7 +449,9 @@ const submitForm = async (e: any) => {
         alert(
             response.data.message
         );
+
         navigate("/dashboard");
+
     }
     catch (error: any) {
 
@@ -367,7 +499,11 @@ value={formData.applicant_name}
 onChange={handleChange}
 
 />
-
+{errors.applicant_name && (
+    <span className="field-error">
+        {errors.applicant_name}
+    </span>
+)}
 
 
 <label>
@@ -376,6 +512,7 @@ Mobile Number
 
 
 <input
+type="tel"
 
 name="mobile_number"
 
@@ -386,7 +523,11 @@ value={formData.mobile_number}
 onChange={handleChange}
 
 />
-
+{errors.mobile_number && (
+    <span className="field-error">
+        {errors.mobile_number}
+    </span>
+)}
 
 
 <label>
@@ -403,7 +544,11 @@ value={formData.address}
 onChange={handleChange}
 
 />
-
+{errors.address && (
+    <span className="field-error">
+        {errors.address}
+    </span>
+)}
 
 
 <label>
@@ -427,17 +572,17 @@ Select
 </option>
 
 
-<option>
+<option value="Steam Boiler">
 Steam Boiler
 </option>
 
 
-<option>
+<option value="Hot Water Boiler">
 Hot Water Boiler
 </option>
 
 
-<option>
+<option value="Industrial Boiler">
 Industrial Boiler
 </option>
 
@@ -446,7 +591,11 @@ Industrial Boiler
 
 
 
-
+{errors.boiler_type && (
+    <span className="field-error">
+        {errors.boiler_type}
+    </span>
+)}
 
 <label>
 Boiler Capacity (TPH)
@@ -464,7 +613,11 @@ value={formData.boiler_capacity}
 onChange={handleChange}
 
 />
-
+{errors.boiler_capacity && (
+    <span className="field-error">
+        {errors.boiler_capacity}
+    </span>
+)}
 
 
 
@@ -485,7 +638,11 @@ value={formData.year_of_installation}
 onChange={handleChange}
 
 />
-
+{errors.year_of_installation && (
+    <span className="field-error">
+        {errors.year_of_installation}
+    </span>
+)}
 
 
 
@@ -504,9 +661,11 @@ value={formData.purpose}
 onChange={handleChange}
 
 />
-
-
-
+{errors.purpose && (
+    <span className="field-error">
+        {errors.purpose}
+    </span>
+)}
 
 
 <label>Upload Boiler Certificate</label>
@@ -533,7 +692,11 @@ onChange={handleChange}
     name="boiler_certificate"
     onChange={handleFile}
 />
-
+{errors.boiler_certificate && (
+    <span className="field-error">
+        {errors.boiler_certificate}
+    </span>
+)}
 
 
 
