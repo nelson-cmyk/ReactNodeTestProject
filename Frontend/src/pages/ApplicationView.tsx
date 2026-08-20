@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import "../css/ApplicationView.css";
+
+  interface WorkflowAction {
+    action_id: number;
+    action_name: string;
+}
 
 function ApplicationView() {
     const { id } = useParams();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    
+  
 
 const [remarks, setRemarks] = useState("");
     // =========================================
@@ -15,15 +22,8 @@ const [remarks, setRemarks] = useState("");
     // =========================================
 const fetchApplication = async () => {
 
-    const token = localStorage.getItem("token");
-
-    const response = await axios.get(
-        `http://localhost:5000/api/workflow/application/${id}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
+    const response = await api.get(
+        `/workflow/application/${id}`
     );
 
     console.log(
@@ -43,7 +43,7 @@ const {
 } = useQuery({
 
     queryKey: [
-        "application",
+        "applicant-applications",
         id
     ],
 
@@ -61,8 +61,7 @@ const {
     const application =
         data?.application || null;
 
-    const actions =
-        data?.actions || [];
+    const actions: WorkflowAction[] = data?.actions || [];
 
     // =========================================
     // Loading
@@ -169,10 +168,7 @@ const {
     // Workflow Action
     // =====================================================
 
-const handleAction = async (action: any) => {
-
-    const token =
-        localStorage.getItem("token");
+const handleAction = async (action: WorkflowAction) => {
 
     try {
 
@@ -181,48 +177,35 @@ const handleAction = async (action: any) => {
              action.action_name === "Cancel") &&
             !remarks.trim()
         ) {
-
-            alert(
-                "Remarks are required."
-            );
-
+            alert("Remarks are required.");
             return;
         }
 
-        const response =
-            await axios.post(
-                "http://localhost:5000/api/workflow/action",
-                {
-                    application_id:
-                        application.application_id,
+        const response = await api.post(
+            "/workflow/action",
+            {
+                application_id:
+                    application.application_id,
 
-                    action_id:
-                        action.action_id,
+                action_id:
+                    action.action_id,
 
-                    remarks:
-                        remarks.trim()
-                },
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
-                }
-            );
+                remarks:
+                    remarks.trim()
+            }
+        );
 
         console.log(
             "Workflow Action Response:",
             response.data
         );
 
-        alert(
-            response.data.message
-        );
+        alert(response.data.message);
 
         // Remove old cached application
         queryClient.invalidateQueries({
             queryKey: [
-                "application",
+                "applicant-applications",
                 id
             ]
         });
@@ -238,8 +221,7 @@ const handleAction = async (action: any) => {
 
         navigate(-1);
 
-    }
-    catch (error: any) {
+    } catch (error: any) {
 
         console.log(
             "Workflow Action Error:",
@@ -251,7 +233,6 @@ const handleAction = async (action: any) => {
             error.response?.data?.message ||
             "Unable to perform action"
         );
-
     }
 };
     return (

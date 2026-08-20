@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Registration.css";
-import axios from "axios";
+import api from "../api/axios"
 
 function Registration() {
   const navigate = useNavigate();
@@ -52,8 +52,8 @@ function Registration() {
   if (!validate()) return;
  
   try {
-    const response = await axios.post(
-      "http://localhost:5000/api/register",
+    const response = await api.post(
+      "/register",
       {
         full_name: formData.fullname,
         email: formData.email,

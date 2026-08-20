@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import "../css/ApplicationHistory.css";
 
 function WorkflowApplicationHistory() {
@@ -40,18 +40,10 @@ function WorkflowApplicationHistory() {
         setHistory([]);
         setSearched(true);
 
-         const token =
-            localStorage.getItem("token");
         try {
 
-            const response = await axios.get(
-                `http://localhost:5000/api/workflow-application-history/${applicationNo.trim()}`,
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
-                }
+            const response = await api.get(
+                `/workflow-application-history/${applicationNo.trim()}`
             );
 
             setHistory(

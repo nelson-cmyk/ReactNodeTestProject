@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { Link } from "react-router-dom";
 import {
     useQuery
@@ -15,16 +15,9 @@ function DraftList({ workflowId }: Props) {
 
 
     const loadDrafts = async () => {
-            
-            const token = localStorage.getItem("token");
 
-            const response = await axios.get(
-                `http://localhost:5000/api/applications/drafts/${workflowId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+            const response = await api.get(
+                `/applications/drafts/${workflowId}`,
             );
 
             console.log("Draft API Response:", response.data);

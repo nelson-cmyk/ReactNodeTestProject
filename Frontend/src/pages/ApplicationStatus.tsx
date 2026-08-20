@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import "../css/ApplicationStatus.css";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -28,9 +28,6 @@ function ApplicationStatus() {
     setApplication(null);
 
     try {
-
-        const token =
-            localStorage.getItem("token");
 
         const userString =
             localStorage.getItem("user");
@@ -122,15 +119,9 @@ console.log("User role:", user?.role_id);
         );
 
 
-        const response = await axios.get(
-            `http://localhost:5000/api/application-status/${searchNo}`,
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${token}`
-                }
-            }
-        );
+        const response = await api.get(
+    `/application-status/${searchNo}`
+);
 
 
         console.log(

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 import ApplicationForm from "./ApplicationFormHousing";
 import DraftList from "./DraftList";
@@ -29,17 +29,9 @@ function HousingPage() {
 
         try {
 
-            const token = localStorage.getItem("token");
-
-            const response = await axios.get(
-                `http://localhost:5000/api/applications/drafts/${workflowId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+            const response = await api.get(
+                `/applications/drafts/${workflowId}`
             );
-
 
             const draftData =
                 Array.isArray(response.data)

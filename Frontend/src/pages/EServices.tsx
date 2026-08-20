@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 import "../css/EServices.css";
@@ -22,15 +22,9 @@ function EServices() {
 
         try {
 
-            const token = localStorage.getItem("token");
-
-            const response = await axios.get(
-                "http://localhost:5000/api/services",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+            const response = await api.get(
+                "/services",
+                
             );
 
             console.log(

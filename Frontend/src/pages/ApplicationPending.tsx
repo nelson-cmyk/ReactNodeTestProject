@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 function ApplicationPending() {
@@ -22,22 +22,12 @@ function ApplicationPending() {
 
 
     const loadApplications = async () => {
-
-        const token =
-            localStorage.getItem("token");
-
         try {
 
-            const response = await axios.get(
-                "http://localhost:5000/api/applications/pending",
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
-                }
+            const response = await api.get(
+                "/applications/pending"
             );
-
+                    
             console.log(
                 "Pending Applications:",
                 response.data

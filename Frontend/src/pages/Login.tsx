@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Login.css";
-import axios from "axios";
+import api from "../api/axios";
 
 function Login() {
   const navigate = useNavigate();
@@ -58,8 +58,8 @@ function Login() {
   if (!validate()) return;
 
   try {
-    const response = await axios.post(
-  "http://localhost:5000/api/login",
+    const response = await api.post(
+  "/login",
   {
     email: formData.email,
     password: formData.password,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 function WorkflowApplication() {
@@ -22,87 +22,51 @@ function WorkflowApplication() {
     const loadApplication = async () => {
 
         try {
+        const response = await api.get(
+            `/workflow/application/${applicationId}`
+        );
 
-            const token = localStorage.getItem("token");
-
-            const response = await axios.get(
-                "http://localhost:5000/api/workflow/application/" + applicationId,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
-console.log(response.data);
-
-            setApplication(response.data.application);
+        console.log(response.data);
+         setApplication(response.data.application);
             setActions(response.data.actions);
-
-        }
-        catch (err) {
-
-            console.log(err);
-
-        }
-
-    };
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 
-    const workflowAction = async (actionId: string) => {
 
-        try {
+const workflowAction = async (actionId: string) => {
+    try {
+        setLoading(true);
 
-            setLoading(true);
+        const response = await api.post(
+            "/workflow/action",
+            {
+                application_id: applicationId,
+                action_id: actionId,
+                remarks: remarks
+            }
+        );
 
-            const token = localStorage.getItem("token");
+        console.log("Response:", response.data);
 
-            const response = await axios.post(
+        alert(response.data.message);
 
-                "http://localhost:5000/api/workflow/action",
+        // Redirect to pending tasks page
+        navigate("/task");
 
-                {
+    } catch (error: any) {
+        console.log(error);
 
-                    application_id: applicationId,
-                    action_id: actionId,
-                    remarks: remarks
-
-                },
-
-                {
-
-                    headers: {
-
-                        Authorization: `Bearer ${token}`
-
-                    }
-
-                }
-
-            );
-console.log("Response:", response.data);
-            alert(response.data.message);
-// Redirect to pending tasks page
-    navigate("/task");
-            
-
-        }
-        catch (error: any) {
-
-            console.log(error);
-
-            alert(
-                error.response?.data?.message ||
-                "Action failed"
-            );
-
-        }
-        finally {
-
-            setLoading(false);
-
-        }
-
-    };
+        alert(
+            error.response?.data?.message ||
+            "Action failed"
+        );
+    } finally {
+        setLoading(false);
+    }
+};
 
 
     if (!application)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { Link } from "react-router-dom";
 
 import "../css/Tables.css";
@@ -24,18 +24,9 @@ function SubmittedList({ workflowId = 1 }: Props) {
     const loadApplications = async () => {
 
         try {
+            const response = await api.get(
 
-            const token = localStorage.getItem("token");
-
-            const response = await axios.get(
-
-                `http://localhost:5000/api/applications/submitted/${workflowId}`,
-
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+                `/applications/submitted/${workflowId}`
 
             );
 

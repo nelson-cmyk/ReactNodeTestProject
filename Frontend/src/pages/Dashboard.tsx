@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import "../css/Dashboard.css";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -52,15 +52,10 @@ const [stats,setStats] = useState({
                 queryFn: async () => {
 
                     const response =
-                        await axios.get(
-                            "http://localhost:5000/api/applications/my-applications",
-                            {
-                                headers: {
-                                    Authorization:
-                                        `Bearer ${token}`
-                                }
-                            }
+                        await api.get(
+                            "/applications/my-applications"
                         );
+                                
 
                     console.log(
                         "Applicant applications prefetched:",
