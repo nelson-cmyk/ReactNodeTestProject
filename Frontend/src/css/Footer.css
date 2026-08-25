@@ -1,88 +1,531 @@
-/* ===========================
-   Modern Footer
-=========================== */
+/* =========================================================
+   UX4G FOOTER
+   ========================================================= */
 
-.portal-footer {
-    background: linear-gradient(90deg, #0f172a, #1e3a8a);
-    color: #ffffff;
+.ux4g-footer {
+    width: 100%;
+    background: #ffffff;
+    color: #171717;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
+
+/* =========================================================
+   MAIN FOOTER WRAPPER
+   ========================================================= */
+
+.ux4g-footer-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DEPARTMENT INFORMATION
+   ========================================================= */
+
+.ux4g-dept-wrapper {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.ux4g-footer-brand {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    flex-wrap: wrap;
-
-    padding: 18px 40px;
-
-    box-shadow: 0 -5px 20px rgba(0,0,0,.15);
-
-    border-top: 3px solid #38bdf8;
+    gap: 16px;
 }
 
-/* Left */
 
-.footer-social {
-    display: flex;
-    gap: 12px;
-}
-
-.footer-social span {
-    width: 42px;
-    height: 42px;
+.ux4g-footer-brand-logo {
+    width: 56px;
+    height: 56px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 22px;
-
     border-radius: 50%;
 
-    background: rgba(255,255,255,.12);
+    background: #4b2acb;
+    color: white;
 
-    cursor: pointer;
-
-    transition: all .3s ease;
+    font-size: 11px;
+    font-weight: 700;
 }
 
-.footer-social span:hover {
-    background: #38bdf8;
-    transform: translateY(-4px) scale(1.08);
+
+.ux4g-footer-brand-title h2 {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
 }
 
-/* Center */
 
-.footer-center {
-    text-align: center;
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.ux4g-footer-description {
+    margin: 16px 0;
+
+    max-width: 650px;
+
     font-size: 14px;
-    color: #dbeafe;
     line-height: 1.6;
+
+    color: #374151;
 }
 
-/* Right */
 
-.footer-right {
+/* =========================================================
+   ORGANISATION LOGOS
+   ========================================================= */
+
+.ux4g-footer-org-logos {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin: 18px 0;
+}
+
+
+.ux4g-org-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 70px;
+    height: 30px;
+
     font-size: 14px;
+    font-weight: 700;
+
+    color: #1f5f9c;
+}
+
+
+/* =========================================================
+   LAST UPDATED
+   ========================================================= */
+
+.ux4g-footer-updated {
+    display: inline-block;
+
+    padding: 7px 14px;
+
+    border-radius: 20px;
+
+    background: #e7ddff;
+    color: #5130c7;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SOCIAL ICONS
+   ========================================================= */
+
+.ux4g-social-list {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 18px;
+}
+
+
+.ux4g-social-list a {
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    color: #171717;
+
+    font-size: 18px;
     font-weight: 600;
-    color: #e2e8f0;
+
+    transition: transform 0.2s ease;
 }
 
-.footer-right::before {
-    content: " ";
+
+.ux4g-social-list a:hover {
+    transform: scale(1.15);
 }
 
-/* Responsive */
 
-@media (max-width: 768px) {
+/* =========================================================
+   CONTACT
+   ========================================================= */
 
-    .portal-footer {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-        padding: 25px 20px;
+.ux4g-contact {
+    padding-left: 20px;
+}
+
+
+.ux4g-contact h3 {
+    margin: 0 0 30px;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+.ux4g-contact-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    margin-bottom: 20px;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    color: #272727;
+}
+
+
+.ux4g-contact-icon {
+    width: 20px;
+
+    flex-shrink: 0;
+
+    font-size: 20px;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.ux4g-footer-divider {
+    width: 100%;
+
+    height: 1px;
+
+    margin: 35px 0;
+
+    background: #dddddd;
+}
+
+
+/* =========================================================
+   FOOTER LINKS
+   ========================================================= */
+
+.ux4g-f-links {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 40px;
+}
+
+
+/* =========================================================
+   LINK LIST
+   ========================================================= */
+
+.ux4g-f-link-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.ux4g-f-link-list h3 {
+    margin: 0 0 5px;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.ux4g-f-link-list a {
+    color: #0000ee;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+
+.ux4g-f-link-list a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   NEW BADGE
+   ========================================================= */
+
+.ux4g-new-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 8px;
+
+    padding: 4px 9px;
+
+    border: 1px solid #9c83ff;
+
+    border-radius: 14px;
+
+    color: #6b4eff;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   BOTTOM STRIP
+   ========================================================= */
+
+.ux4g-fbs-t1 {
+    width: 100%;
+
+    background: #352080;
+
+    color: #ffffff;
+}
+
+
+.ux4g-fbs-links {
+    max-width: 1200px;
+
+    min-height: 58px;
+
+    margin: 0 auto;
+
+    padding: 0 32px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+.ux4g-copyright {
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   POWERED BY
+   ========================================================= */
+
+.ux4g-powered {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 12px;
+}
+
+
+.ux4g-powered strong {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTTOM LINKS
+   ========================================================= */
+
+.ux4g-bottom-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.ux4g-bottom-links a {
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
+
+.ux4g-bottom-links a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .ux4g-dept-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
     }
 
-    .footer-social {
+
+    .ux4g-contact {
+        padding-left: 0;
+    }
+
+
+    .ux4g-f-links {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        row-gap: 40px;
+    }
+
+
+    .ux4g-fbs-links {
+        flex-wrap: wrap;
+
         justify-content: center;
+
+        padding-top: 15px;
+        padding-bottom: 15px;
     }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .ux4g-footer-wrapper {
+        padding: 35px 20px;
+    }
+
+
+    .ux4g-dept-wrapper {
+        display: block;
+    }
+
+
+    .ux4g-contact {
+        margin-top: 35px;
+    }
+
+
+    .ux4g-contact h3 {
+        margin-bottom: 20px;
+    }
+
+
+    .ux4g-footer-org-logos {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+
+    .ux4g-f-links {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+
+    .ux4g-f-link-list {
+        gap: 12px;
+    }
+
+
+    .ux4g-footer-divider {
+        margin: 30px 0;
+    }
+
+
+    .ux4g-fbs-links {
+        flex-direction: column;
+
+        text-align: center;
+
+        gap: 12px;
+
+        padding: 18px 15px;
+    }
+
+
+    .ux4g-bottom-links {
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .ux4g-footer-brand-title h2 {
+        font-size: 17px;
+    }
+
+
+    .ux4g-footer-description {
+        font-size: 13px;
+    }
+
+
+    .ux4g-contact-item {
+        font-size: 13px;
+    }
+
+
+    .ux4g-f-link-list a {
+        font-size: 13px;
+    }
+
 }

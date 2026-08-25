@@ -1,195 +1,694 @@
-.login-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.ux4g-identity-access-container {
+    min-height: 100vh;
+    background: #f7f8fa;
+    color: #1f2937;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
-.login-container {
-  background: white;
-  width: 100%;
-  max-width: 480px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: hidden;
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.ux4g-navbar {
+    height: 72px;
+    background: #ffffff;
+    border-bottom: 1px solid #d9dee5;
+    display: flex;
+    align-items: center;
 }
 
-.login-header {
-  background: #3b2a1a;
-  color: white;
-  padding: 1rem 2rem;
-  text-align: center;
+.ux4g-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
 }
 
-.login-header h2 {
-  margin: 0;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
+.ux4g-navbar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
-.login-tabs {
-  display: flex;
-  border-bottom: 2px solid #ccc;
+.ux4g-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.login-tab {
-  flex: 1;
-  padding: 0.8rem;
-  border: none;
-  background: #f0f0f0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  color: #555;
+.ux4g-navbar-logo {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
 }
 
-.login-tab.active {
-  background: white;
-  color: #3b2a1a;
-  border-bottom: 2px solid #e07b00;
+.ux4g-divider-vertical {
+    width: 1px;
+    height: 36px;
+    background: #d0d5dc;
 }
 
-.login-form {
-  padding: 1.5rem 2rem 2rem;
+.ux4g-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1.2rem;
+.ux4g-label-m-strong {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
 }
 
-.form-group label {
-  font-weight: 600;
-  font-size: 0.9rem;
+.ux4g-body-xs-default {
+    font-size: 12px;
+    color: #667085;
 }
 
-.form-group input {
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 0.9rem;
-  background: #f9f9f9;
+.ux4g-help-link {
+    color: #075985;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #888;
-  background: white;
+.ux4g-help-link:hover {
+    text-decoration: underline;
 }
 
-.form-group input:disabled {
-  background: #e9e9e9;
-  cursor: not-allowed;
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.ux4g-identity-access-layout {
+    min-height: calc(100vh - 72px);
+    display: flex;
 }
 
-.otp-row {
-  display: flex;
-  gap: 0.5rem;
+
+/* =========================================================
+   LEFT SIDEBAR
+========================================================= */
+
+.ux4g-identity-access-sidebar {
+    width: 46%;
+    min-height: calc(100vh - 72px);
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #073b63 0%,
+            #075985 50%,
+            #0e7490 100%
+        );
+
+    color: #ffffff;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.otp-row input {
-  flex: 1;
+.ux4g-sidebar-top {
+    position: relative;
+    z-index: 2;
+    max-width: 560px;
 }
 
-.otp-btn {
-  background: #3b2a1a;
-  color: white;
-  border: none;
-  padding: 0 1rem;
-  border-radius: 3px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  white-space: nowrap;
+.ux4g-sidebar-logo-container {
+    margin-bottom: 48px;
 }
 
-.otp-btn:hover {
-  background: #5a3f28;
+.ux4g-logo-white {
+    width: 150px;
+    height: auto;
+    filter: brightness(0) invert(1);
 }
 
-.captcha-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+.ux4g-sidebar-top h1 {
+    margin: 0 0 20px;
+    font-size: 38px;
+    line-height: 1.2;
+    font-weight: 700;
 }
 
-.captcha-box {
-  background: #ddd;
-  padding: 0.6rem 1rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  letter-spacing: 4px;
-  border-radius: 3px;
-  font-family: monospace;
-  user-select: none;
-  white-space: nowrap;
+.ux4g-sidebar-top p {
+    margin: 0;
+    max-width: 520px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.captcha-row input {
-  flex: 1;
+.ux4g-sidebar-bottom {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 48px;
 }
 
-.login-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
+.ux4g-sidebar-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
 
-.forgot-link {
-  font-size: 0.85rem;
-  color: #0066cc;
-  text-decoration: none;
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
+.ux4g-sidebar-stat span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.75);
 }
 
-.forgot-link:hover {
-  text-decoration: underline;
+.ux4g-sidebar-stat strong {
+    font-size: 16px;
+    color: #ffffff;
 }
 
-.login-btn {
-  background: #e07b00;
-  color: white;
-  border: none;
-  padding: 0.6rem 2rem;
-  font-size: 0.95rem;
-  font-weight: bold;
-  cursor: pointer;
-  letter-spacing: 1px;
-  border-radius: 3px;
+
+/* =========================================================
+   DECORATIVE RINGS
+========================================================= */
+
+.ux4g-sidebar-ring {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
-.login-btn:hover {
-  background: #c56a00;
+.ux4g-ring-1 {
+    width: 480px;
+    height: 480px;
+    right: -230px;
+    top: 80px;
 }
 
-.register-link {
-  text-align: center;
-  font-size: 0.85rem;
-  margin-top: 1rem;
-  color: #555;
+.ux4g-ring-2 {
+    width: 650px;
+    height: 650px;
+    right: -350px;
+    bottom: -260px;
 }
 
-.register-link a {
-  color: #0066cc;
-  text-decoration: none;
+
+/* =========================================================
+   RIGHT COLUMN
+========================================================= */
+
+.ux4g-identity-access-column {
+    width: 54%;
+    min-height: calc(100vh - 72px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 48px 32px;
 }
 
-.register-link a:hover {
-  text-decoration: underline;
+
+/* =========================================================
+   FORM BOX
+========================================================= */
+
+.ux4g-form-box {
+    width: 100%;
+    max-width: 470px;
+    background: #ffffff;
+    padding: 42px;
+    border: 1px solid #e0e4e8;
+    border-radius: 8px;
+    box-shadow:
+        0 4px 18px rgba(16, 24, 40, 0.07);
+}
+
+.ux4g-form-box h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    line-height: 1.3;
+    color: #101828;
+}
+
+.ux4g-form-subtitle {
+    margin: 0 0 28px;
+    color: #667085;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   LOGIN TABS
+========================================================= */
+
+.ux4g-login-tabs {
+    display: flex;
+    border-bottom: 1px solid #d0d5dd;
+    margin-bottom: 28px;
+}
+
+.ux4g-login-tabs button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 13px 10px;
+
+    color: #667085;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    position: relative;
+}
+
+.ux4g-login-tabs button.active {
+    color: #075985;
+}
+
+.ux4g-login-tabs button.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #0e7490;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.ux4g-signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ux4g-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.ux4g-input-container label {
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #344054;
 }
 
 .required {
-  color: red;
+    color: #d92d20;
+    margin-left: 3px;
 }
 
-.error {
-  color: red;
-  font-size: 0.8rem;
+.ux4g-input {
+    width: 100%;
+}
+
+.ux4g-input-input {
+    width: 100%;
+    box-sizing: border-box;
+
+    height: 48px;
+    padding: 0 14px;
+
+    border: 1px solid #cfd4dc;
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    color: #101828;
+    font-size: 14px;
+
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.ux4g-input-input::placeholder {
+    color: #98a2b3;
+}
+
+.ux4g-input-input:focus {
+    border-color: #0e7490;
+    box-shadow:
+        0 0 0 3px rgba(14, 116, 144, 0.12);
+}
+
+.ux4g-input-input:disabled {
+    background: #f2f4f7;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.ux4g-error {
+    margin-top: 6px;
+    color: #d92d20;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ERROR ALERT
+========================================================= */
+
+.ux4g-alert {
+    display: flex;
+    gap: 12px;
+
+    padding: 13px 14px;
+
+    border-radius: 5px;
+}
+
+.ux4g-alert-error {
+    background: #fef3f2;
+    border: 1px solid #fecdca;
+}
+
+.ux4g-alert-icon {
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #d92d20;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.ux4g-alert-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ux4g-alert-message {
+    color: #912018;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ux4g-alert-footer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ux4g-alert-footer button {
+    border: none;
+    padding: 0;
+
+    background: transparent;
+
+    color: #b42318;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.ux4g-alert-footer span {
+    color: #b42318;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CAPTCHA
+========================================================= */
+
+.ux4g-captcha-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ux4g-captcha-box {
+    min-width: 110px;
+    height: 48px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f2f4f7;
+    border: 1px solid #d0d5dd;
+    border-radius: 5px;
+
+    color: #344054;
+
+    font-family: monospace;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 5px;
+
+    user-select: none;
+}
+
+
+/* =========================================================
+   OTP
+========================================================= */
+
+.ux4g-otp-row {
+    display: flex;
+    gap: 10px;
+}
+
+.ux4g-otp-row .ux4g-input-input {
+    flex: 1;
+}
+
+.ux4g-btn-secondary {
+    height: 48px;
+
+    padding: 0 18px;
+
+    border: 1px solid #075985;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #075985;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ux4g-btn-secondary:hover {
+    background: #f0f9ff;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.ux4g-form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+}
+
+.ux4g-btn-primary,
+.ux4g-btn-outline-primary {
+    width: 100%;
+    height: 50px;
+
+    border-radius: 5px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.ux4g-btn-primary {
+    border: 1px solid #075985;
+    background: #075985;
+    color: #ffffff;
+}
+
+.ux4g-btn-primary:hover {
+    background: #064e78;
+}
+
+.ux4g-btn-outline-primary {
+    border: 1px solid #075985;
+    background: #ffffff;
+    color: #075985;
+}
+
+.ux4g-btn-outline-primary:hover {
+    background: #f0f9ff;
+}
+
+
+/* =========================================================
+   OR DIVIDER
+========================================================= */
+
+.ux4g-divider-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #98a2b3;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ux4g-divider-horizontal::before,
+.ux4g-divider-horizontal::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e4e7ec;
+}
+
+
+/* =========================================================
+   REGISTRATION
+========================================================= */
+
+.ux4g-register {
+    margin-top: 28px;
+    text-align: center;
+}
+
+.ux4g-register a {
+    color: #075985;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.ux4g-register a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.ux4g-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin-top: 22px;
+
+    color: #667085;
+    font-size: 12px;
+}
+
+.ux4g-footer-brand {
+    color: #075985;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .ux4g-identity-access-sidebar {
+        display: none;
+    }
+
+    .ux4g-identity-access-column {
+        width: 100%;
+        min-height: calc(100vh - 72px);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .ux4g-navbar {
+        height: auto;
+        min-height: 68px;
+    }
+
+    .ux4g-container {
+        padding: 0 16px;
+    }
+
+    .ux4g-navbar-logo {
+        height: 34px;
+    }
+
+    .ux4g-brand-text {
+        display: none;
+    }
+
+    .ux4g-help-link {
+        font-size: 12px;
+    }
+
+    .ux4g-identity-access-column {
+        padding: 24px 16px;
+    }
+
+    .ux4g-form-box {
+        padding: 26px 20px;
+    }
+
+    .ux4g-form-box h2 {
+        font-size: 23px;
+    }
+
+    .ux4g-captcha-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ux4g-captcha-box {
+        width: 100%;
+    }
+
+    .ux4g-otp-row {
+        flex-direction: column;
+    }
+
+    .ux4g-btn-secondary {
+        width: 100%;
+    }
+
 }

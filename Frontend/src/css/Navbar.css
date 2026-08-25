@@ -1,146 +1,400 @@
+/* =========================================================
+   UX4G NAVBAR
+   ========================================================= */
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* ---------------------------------------------------------
+   BASE NAVBAR
+   --------------------------------------------------------- */
 
-    padding: 0 40px;
-    height: 65px;
-
-    background: linear-gradient(90deg,#0f172a,#1e3a8a);
-
-    box-shadow: 0 5px 20px rgba(0,0,0,.2);
-
-    position: sticky;
-    top: 0;
+.ux4g-navbar {
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    position: relative;
     z-index: 1000;
 }
 
-/* Brand */
 
-.brand a{
-    color:#fff;
-    font-size:24px;
-    font-weight:700;
-    text-decoration:none;
-    letter-spacing:1px;
+/* ---------------------------------------------------------
+   CONTAINER
+   --------------------------------------------------------- */
+
+.ux4g-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+    box-sizing: border-box;
 }
 
-/* Menu */
 
-.nav-menu{
-    display:flex;
-    align-items:center;
-    gap:8px;
+/* ---------------------------------------------------------
+   NAVBAR WRAPPER
+   --------------------------------------------------------- */
 
-    margin:0;
-    padding:0;
-    list-style:none;
+.ux4g-navbar-wrap {
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
 }
 
-.nav-menu li{
-    position:relative;
+
+/* ---------------------------------------------------------
+   LOGO
+   --------------------------------------------------------- */
+
+.ux4g-navbar-logo {
+    height: 42px;
+    width: auto;
+
+    display: block;
+
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
-.nav-menu a{
-    display:block;
 
-    padding:10px 18px;
+/* ---------------------------------------------------------
+   NAVIGATION LIST
+   --------------------------------------------------------- */
 
-    color:white;
+.ux4g-navbar-links {
+    display: flex;
+    align-items: center;
 
-    text-decoration:none;
+    gap: 4px;
 
-    border-radius:8px;
+    margin: 0;
+    padding: 0;
 
-    transition:.3s;
+    list-style: none;
 }
 
-/* Hover */
 
-.nav-menu a:hover{
-    background:rgba(255,255,255,.12);
-    transform:translateY(-2px);
+/* ---------------------------------------------------------
+   NAVIGATION LINKS
+   --------------------------------------------------------- */
+
+.ux4g-navbar-links li {
+    margin: 0;
+    padding: 0;
 }
 
-/* Underline animation */
+.ux4g-navbar-links a {
+    display: inline-flex;
+    align-items: center;
 
-.nav-menu a::after{
-    content:"";
+    min-height: 40px;
 
-    position:absolute;
+    padding: 8px 14px;
 
-    left:18px;
-    right:18px;
-    bottom:6px;
+    color: #1f2937;
 
-    height:2px;
+    text-decoration: none;
 
-    background:#38bdf8;
+    font-size: 14px;
+    font-weight: 500;
 
-    transform:scaleX(0);
+    border-radius: 6px;
 
-    transition:.3s;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.nav-menu a:hover::after{
-    transform:scaleX(1);
+.ux4g-navbar-links a:hover {
+    background: #f1f5f9;
+    color: #075985;
 }
 
-/* Logout */
 
-.logout-btn{
-    padding:10px 18px;
+/* ---------------------------------------------------------
+   ACTIVE / CURRENT LINK
+   --------------------------------------------------------- */
 
-    border:none;
-
-    border-radius:8px;
-
-    background:#ef4444;
-
-    color:white;
-
-    cursor:pointer;
-
-    transition:.3s;
+.ux4g-navbar-links a.active {
+    background: #e0f2fe;
+    color: #075985;
+    font-weight: 600;
 }
 
-.logout-btn:hover{
-    background:#dc2626;
-    transform:translateY(-2px);
+
+/* ---------------------------------------------------------
+   RIGHT ALIGNED NAVBAR
+   --------------------------------------------------------- */
+
+.ux4g-navbar-right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
 }
 
-/* Active Link (works with NavLink) */
 
-.active{
-    background:#38bdf8;
-    color:#0f172a !important;
-    font-weight:bold;
+/* ---------------------------------------------------------
+   LOGIN BUTTON / LINK
+   --------------------------------------------------------- */
+
+.ux4g-navbar-links .login-link {
+    color: #075985;
+    font-weight: 600;
 }
 
-/* Mobile */
 
-@media(max-width:768px){
+/* ---------------------------------------------------------
+   LOGOUT BUTTON
+   --------------------------------------------------------- */
 
-.navbar{
-    flex-direction:column;
-    height:auto;
-    padding:20px;
+.ux4g-navbar-links .logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+
+    padding: 8px 16px;
+
+    border: 1px solid #075985;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #075985;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.nav-menu{
-    flex-direction:column;
-    width:100%;
-    margin-top:20px;
+.ux4g-navbar-links .logout-btn:hover {
+    background: #075985;
+    color: #ffffff;
 }
 
-.nav-menu li{
-    width:100%;
+
+/* ---------------------------------------------------------
+   PILL SHAPED
+   --------------------------------------------------------- */
+
+.ux4g-radius-full {
+    border-radius: 9999px !important;
 }
 
-.nav-menu a,
-.logout-btn{
-    width:100%;
-    text-align:center;
+
+/* ---------------------------------------------------------
+   VERTICAL DIVIDER
+   --------------------------------------------------------- */
+
+.ux4g-divider-vertical {
+    width: 1px;
+    height: 32px;
+
+    display: inline-block;
+
+    background: #d1d5db;
+
+    flex-shrink: 0;
+}
+
+
+/* ---------------------------------------------------------
+   HORIZONTAL DIVIDER
+   --------------------------------------------------------- */
+
+.ux4g-divider-horizontal {
+    width: 100%;
+    height: 1px;
+
+    display: block;
+
+    background: #e5e7eb;
+
+    margin: 0;
+}
+
+
+/* ---------------------------------------------------------
+   NAVBAR MOBILE MENU
+   --------------------------------------------------------- */
+
+.ux4g-navbar-mobile-toggle {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+    .ux4g-container {
+        padding: 0 24px;
+    }
+
+    .ux4g-navbar-wrap {
+        min-height: 68px;
+        gap: 16px;
+    }
+
+    .ux4g-navbar-links {
+        gap: 2px;
+    }
+
+    .ux4g-navbar-links a {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .ux4g-navbar-logo {
+        height: 38px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .ux4g-container {
+        padding: 0 20px;
+    }
+
+    .ux4g-navbar-wrap {
+        min-height: 64px;
+    }
+
+    .ux4g-navbar-logo {
+        height: 36px;
+    }
+
+    /*
+       Navigation links become scrollable on smaller screens
+       instead of overflowing the page.
+    */
+
+    .ux4g-navbar-links {
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+    }
+
+    .ux4g-navbar-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .ux4g-navbar-links a {
+        white-space: nowrap;
+    }
+
+    .ux4g-divider-vertical {
+        height: 28px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .ux4g-container {
+        padding: 0 15px;
+    }
+
+    .ux4g-navbar-wrap {
+        min-height: 60px;
+        gap: 10px;
+    }
+
+    .ux4g-navbar-logo {
+        height: 32px;
+    }
+
+    .ux4g-navbar-links {
+        gap: 0;
+    }
+
+    .ux4g-navbar-links a {
+        min-height: 36px;
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .ux4g-navbar-links .logout-btn {
+        min-height: 36px;
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .ux4g-divider-vertical {
+        height: 26px;
+    }
+    /* =========================================================
+   NAVBAR LEFT
+   ========================================================= */
+
+.ux4g-navbar-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.ux4g-navbar-home {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 40px;
+
+    padding: 8px 14px;
+
+    color: #1f2937;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border-radius: 6px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.ux4g-navbar-home:hover {
+    background: #f1f5f9;
+    color: #075985;
 }
 }

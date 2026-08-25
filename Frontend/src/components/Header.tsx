@@ -1,41 +1,50 @@
 import logo from "../assets/logo.png";
-import "../css/Layout.css";
+import "../css/Header.css";
 
 function Header() {
-  return (
-    <header className="portal-header">
-      <div className="header-overlay"></div>
+    return (
+        <nav className="ux4g-navbar">
+            <div className="ux4g-container">
+                <div className="ux4g-navbar-wrap">
 
-      <div className="header-content">
-        <div className="header-left">
-          <img
-            src={logo}
-            alt="Government Logo"
-            className="logo"
-          />
+                    {/* LEFT */}
+                    <div className="ux4g-d-flex ux4g-ai-center ux4g-inline-gap-s">
 
-          <div className="title-section">
-            <h1>TEST PROJECT</h1>
-            <h3>Department Name</h3>
-            <p>Government of West Bengal</p>
-          </div>
-        </div>
+                        <img
+                            src={logo}
+                            alt="Government Logo"
+                            className="ux4g-navbar-logo"
+                        />
 
-        <div className="header-right">
-          <div className="counter-card">
-            <span>Visitors</span>
-            <strong>1,25,489</strong>
-          </div>
+                        <span className="ux4g-divider-vertical" />
 
-          <input
-            type="text"
-            placeholder="🔍 Search..."
-            className="search-box"
-          />
-        </div>
-      </div>
-    </header>
-  );
+                        <div className="ux4g-d-flex ux4g-flex-column">
+
+                            <span className="ux4g-label-m-strong">
+                                TEST PROJECT
+                            </span>
+
+                            <span className="ux4g-body-xs-default">
+                                Department Name
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* RIGHT */}
+                    <a
+                        href="#"
+                        className="ux4g-label-l-default ux4g-text-link-md"
+                    >
+                        Help &amp; Support
+                    </a>
+
+                </div>
+            </div>
+        </nav>
+    );
 }
 
 export default Header;

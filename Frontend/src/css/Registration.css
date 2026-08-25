@@ -1,321 +1,640 @@
-.form-page {
-  padding: 2rem;
-  background: #f5f5f5;
-  min-height: 100vh;
+/* =========================================================
+   REGISTRATION PAGE
+   UX4G STYLE
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
 }
 
-.form-container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.ux4g-identity-access-container {
+    min-height: 100vh;
+    width: 100%;
+    background: #ffffff;
+    color: #1f2937;
 }
 
-.form-header {
-  background: #3b2a1a;
-  color: white;
-  padding: 1rem 2rem;
-  text-align: center;
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.ux4g-identity-access-layout {
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-columns: 42% 58%;
 }
 
-.form-header h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
+
+/* =========================================================
+   COMMON FLEX UTILITIES
+   ========================================================= */
+
+.ux4g-d-flex {
+    display: flex;
 }
 
-.registration-form {
-  padding: 2rem;
+.ux4g-flex-column {
+    flex-direction: column;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+.ux4g-ai-center {
+    align-items: center;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+.ux4g-jc-center {
+    justify-content: center;
 }
 
-.form-group label {
-  font-weight: 600;
-  font-size: 0.95rem;
+.ux4g-jc-between {
+    justify-content: space-between;
 }
 
-.form-group input {
-  padding: 0.7rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.95rem;
+.ux4g-inline-gap-s {
+    gap: 12px;
 }
 
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.3rem;
+.ux4g-gap-xs {
+    gap: 8px;
 }
 
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
-  cursor: pointer;
+.ux4g-stack-gap-m {
+    gap: 18px;
 }
 
-.required {
-  color: red;
+
+/* =========================================================
+   LEFT SIDEBAR
+   ========================================================= */
+
+.ux4g-identity-access-sidebar {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 100vh;
+
+    padding: 60px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #073b5c 0%,
+            #075985 50%,
+            #0e7490 100%
+        );
+
+    color: #ffffff;
 }
 
-.error {
-  color: red;
-  font-size: 0.82rem;
+
+/* =========================================================
+   SIDEBAR TOP
+   ========================================================= */
+
+.ux4g-sidebar-top {
+    position: relative;
+    z-index: 2;
+
+    max-width: 600px;
 }
 
-.form-submit {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
+.ux4g-sidebar-logo-container {
+    margin-bottom: 48px;
 }
 
-.submit-btn {
-  background: #e07b00;
-  color: white;
-  padding: 0.7rem 2rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
+.ux4g-sidebar-logo-placeholder {
+    width: 150px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
-.submit-btn:hover {
-  background: #c56a00;
+
+/* =========================================================
+   SIDEBAR HEADING
+   ========================================================= */
+
+.ux4g-heading-l-default {
+    margin: 0;
+
+    font-size: 36px;
+    line-height: 1.2;
+    font-weight: 700;
 }
 
-.form-page {
-  padding: 2rem;
-  background: #f5f5f5;
-  min-height: 100vh;
+.ux4g-sidebar-top .ux4g-heading-l-default {
+    color: #ffffff;
 }
 
-.form-container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  border: 1px solid #ccc;
+.ux4g-mb-m {
+    margin-bottom: 18px;
 }
 
-.form-header {
-  background: #3b2a1a;
-  color: white;
-  padding: 1rem 2rem;
-  text-align: center;
+
+/* =========================================================
+   SIDEBAR DESCRIPTION
+   ========================================================= */
+
+.ux4g-body-l-default {
+    margin: 0;
+
+    font-size: 18px;
+    line-height: 1.7;
 }
 
-.form-header h2 {
-  margin: 0;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
+.ux4g-text-neutral-inverse {
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.registration-form {
-  padding: 2rem;
+
+/* =========================================================
+   SIDEBAR STATISTICS
+   ========================================================= */
+
+.ux4g-sidebar-bottom {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    gap: 32px;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;  /* ✅ Two columns */
-  gap: 1.5rem;
-  margin-bottom: 1.2rem;
+.ux4g-sidebar-stat {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding-right: 30px;
+
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+.ux4g-sidebar-stat:last-child {
+    border-right: none;
 }
 
-.form-group label {
-  font-weight: 600;
-  font-size: 0.9rem;
+.ux4g-label-s-default {
+    font-size: 11px;
+    line-height: 1.4;
+
+    letter-spacing: 0.8px;
+
+    font-weight: 600;
 }
 
-.form-group input {
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 0.9rem;
-  background: #f9f9f9;
+.ux4g-sidebar-stat .ux4g-label-l-default {
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #888;
-  background: white;
+.ux4g-label-l-default {
+    font-size: 15px;
+    line-height: 1.4;
 }
 
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.3rem;
+
+/* =========================================================
+   DECORATIVE RINGS
+   ========================================================= */
+
+.ux4g-sidebar-ring {
+    position: absolute;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 50%;
+
+    pointer-events: none;
 }
 
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
-  cursor: pointer;
+.ux4g-ring-1 {
+    width: 450px;
+    height: 450px;
+
+    right: -220px;
+    top: 80px;
 }
 
-.required {
-  color: red;
+.ux4g-ring-2 {
+    width: 650px;
+    height: 650px;
+
+    right: -330px;
+    bottom: -280px;
 }
 
-.error {
-  color: red;
-  font-size: 0.8rem;
+.ux4g-sidebar-ring-bottom {
+    opacity: 0.8;
 }
 
-.form-submit {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
+
+/* =========================================================
+   RIGHT FORM COLUMN
+   ========================================================= */
+
+.ux4g-identity-access-column {
+    min-height: 100vh;
+
+    padding: 50px 40px;
+
+    background: #ffffff;
 }
 
-.submit-btn {
-  background: #e07b00;
-  color: white;
-  padding: 0.6rem 2.5rem;
-  border: none;
-  font-size: 0.95rem;
-  font-weight: bold;
-  cursor: pointer;
-  letter-spacing: 1px;
+
+/* =========================================================
+   FORM BOX
+   ========================================================= */
+
+.ux4g-form-box {
+    width: 100%;
+    max-width: 520px;
 }
 
-.submit-btn:hover {
-  background: #c56a00;
+.ux4g-text-neutral-primary {
+    color: #111827;
 }
 
-.form-page {
-  padding: 2rem;
-  background: #f5f5f5;
-  min-height: 100vh;
+.ux4g-text-neutral-secondary {
+    color: #6b7280;
 }
 
-.form-container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  border: 1px solid #ccc;
+
+/* =========================================================
+   FORM HEADINGS
+   ========================================================= */
+
+.ux4g-form-box > .ux4g-heading-l-default {
+    font-size: 30px;
 }
 
-.form-header {
-  background: #3b2a1a;
-  color: white;
-  padding: 1rem 2rem;
-  text-align: center;
+.ux4g-mb-xs {
+    margin-bottom: 6px;
 }
 
-.form-header h2 {
-  margin: 0;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
+.ux4g-mb-2xl {
+    margin-bottom: 30px;
 }
 
-.registration-form {
-  padding: 2rem;
+.ux4g-mb-2xs {
+    margin-bottom: 6px;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.2rem;
+.ux4g-mt-2xl {
+    margin-top: 30px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+.ux4g-body-s-default {
+    margin-top: 0;
+
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-.form-group label {
-  font-weight: 600;
-  font-size: 0.9rem;
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.ux4g-signin-form {
+    width: 100%;
 }
 
-.form-group input {
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 0.9rem;
-  background: #f9f9f9;
+.ux4g-input-container {
+    width: 100%;
 }
 
-.form-group input:focus {
-  outline: none;
-  border-color: #888;
-  background: white;
+.ux4g-input-lg {
+    width: 100%;
 }
 
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.3rem;
+.ux4g-input-container label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #1f2937;
+
+    font-size: 14px;
+    font-weight: 600;
 }
 
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
-  cursor: pointer;
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.ux4g-input {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 48px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.required {
-  color: red;
+.ux4g-input:hover {
+    border-color: #94a3b8;
 }
 
-.error {
-  color: red;
-  font-size: 0.8rem;
+.ux4g-input:focus-within {
+    border-color: #075985;
+
+    box-shadow:
+        0 0 0 3px rgba(7, 89, 133, 0.12);
 }
 
-.form-submit {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
+.ux4g-input-prefix {
+    flex-shrink: 0;
+
+    padding-left: 14px;
+    padding-right: 8px;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 500;
 }
 
-.submit-btn {
-  background: #e07b00;
-  color: white;
-  padding: 0.6rem 2.5rem;
-  border: none;
-  font-size: 0.95rem;
-  font-weight: bold;
-  cursor: pointer;
-  letter-spacing: 1px;
+.ux4g-input-input {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 10px 14px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #111827;
+
+    font-family: inherit;
+    font-size: 14px;
 }
 
-.submit-btn:hover {
-  background: #c56a00;
+.ux4g-input-input::placeholder {
+    color: #9ca3af;
+}
+
+
+/* Remove browser number controls if input type changes later */
+
+.ux4g-input-input::-webkit-outer-spin-button,
+.ux4g-input-input::-webkit-inner-spin-button {
+    margin: 0;
+}
+
+
+/* =========================================================
+   REQUIRED FIELD
+   ========================================================= */
+
+.ux4g-required {
+    margin-left: 4px;
+
+    color: #dc2626;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   VALIDATION ERROR
+   ========================================================= */
+
+.ux4g-registration-error {
+    margin-top: 6px;
+
+    color: #b91c1c;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.ux4g-form-actions {
+    width: 100%;
+}
+
+.ux4g-btn-lg {
+    min-height: 48px;
+}
+
+.ux4g-btn-primary {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #075985;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease;
+}
+
+.ux4g-btn-primary:hover {
+    background: #064e75;
+}
+
+.ux4g-btn-primary:active {
+    transform: translateY(1px);
+}
+
+.ux4g-btn-primary:focus {
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(7, 89, 133, 0.2);
+}
+
+
+/* =========================================================
+   LOGIN LINK
+   ========================================================= */
+
+.ux4g-text-center {
+    text-align: center;
+}
+
+.ux4g-text-link {
+    color: #075985;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ux4g-text-link:hover {
+    text-decoration: underline;
+}
+
+.ux4g-label-xl-default {
+    font-size: 15px;
+}
+
+.ux4g-link-button {
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+    .ux4g-identity-access-layout {
+        grid-template-columns: 40% 60%;
+    }
+
+    .ux4g-identity-access-sidebar {
+        padding: 40px;
+    }
+
+    .ux4g-heading-l-default {
+        font-size: 30px;
+    }
+
+    .ux4g-body-l-default {
+        font-size: 16px;
+    }
+
+    .ux4g-identity-access-column {
+        padding: 40px 30px;
+    }
+
+    .ux4g-form-box > .ux4g-heading-l-default {
+        font-size: 28px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .ux4g-identity-access-layout {
+        display: block;
+
+        min-height: 100vh;
+    }
+
+    .ux4g-identity-access-sidebar {
+        display: none;
+    }
+
+    .ux4g-identity-access-column {
+        display: flex;
+
+        min-height: 100vh;
+
+        padding: 40px 24px;
+    }
+
+    .ux4g-form-box {
+        max-width: 520px;
+    }
+
+    .ux4g-form-box > .ux4g-heading-l-default {
+        font-size: 28px;
+    }
+
+    .ux4g-stack-gap-m {
+        gap: 16px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .ux4g-identity-access-column {
+        padding: 30px 18px;
+    }
+
+    .ux4g-form-box > .ux4g-heading-l-default {
+        font-size: 25px;
+    }
+
+    .ux4g-body-s-default {
+        font-size: 13px;
+    }
+
+    .ux4g-input {
+        min-height: 46px;
+    }
+
+    .ux4g-input-input {
+        min-height: 44px;
+
+        padding: 9px 12px;
+
+        font-size: 14px;
+    }
+
+    .ux4g-input-prefix {
+        padding-left: 12px;
+    }
+
+    .ux4g-btn-primary {
+        min-height: 46px;
+    }
+
+    .ux4g-sidebar-bottom {
+        flex-direction: column;
+    }
 }

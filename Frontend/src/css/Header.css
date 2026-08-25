@@ -1,0 +1,237 @@
+/* =========================================================
+   UX4G HEADER / NAVBAR
+   Layout.css
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   NAVBAR
+   --------------------------------------------------------- */
+
+.ux4g-navbar {
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 1000;
+}
+
+
+/* ---------------------------------------------------------
+   CONTAINER
+   --------------------------------------------------------- */
+
+.ux4g-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    box-sizing: border-box;
+}
+
+
+/* ---------------------------------------------------------
+   NAVBAR WRAPPER
+   --------------------------------------------------------- */
+
+.ux4g-navbar-wrap {
+    min-height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+/* ---------------------------------------------------------
+   FLEX UTILITIES
+   --------------------------------------------------------- */
+
+.ux4g-d-flex {
+    display: flex;
+}
+
+.ux4g-ai-center {
+    align-items: center;
+}
+
+.ux4g-flex-column {
+    flex-direction: column;
+}
+
+.ux4g-inline-gap-s {
+    gap: 14px;
+}
+
+
+/* ---------------------------------------------------------
+   GOVERNMENT LOGO
+   --------------------------------------------------------- */
+
+.ux4g-navbar-logo {
+    width: 52px;
+    height: 52px;
+
+    object-fit: contain;
+    display: block;
+}
+
+
+/* ---------------------------------------------------------
+   VERTICAL DIVIDER
+   --------------------------------------------------------- */
+
+.ux4g-divider-vertical {
+    display: block;
+
+    width: 1px;
+    height: 42px;
+
+    background: #d1d5db;
+
+    margin: 0 4px;
+}
+
+
+/* ---------------------------------------------------------
+   TITLE
+   --------------------------------------------------------- */
+
+.ux4g-label-m-strong {
+    font-size: 16px;
+    line-height: 1.4;
+
+    font-weight: 700;
+
+    color: #1f2937;
+
+    white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   DESCRIPTION
+   --------------------------------------------------------- */
+
+.ux4g-body-xs-default {
+    margin-top: 2px;
+
+    font-size: 12px;
+    line-height: 1.4;
+
+    font-weight: 400;
+
+    color: #6b7280;
+
+    white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   HELP & SUPPORT
+   --------------------------------------------------------- */
+
+.ux4g-text-link-md {
+    text-decoration: none;
+
+    color: #075985;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.ux4g-text-link-md:hover {
+    color: #0c4a6e;
+    text-decoration: underline;
+}
+
+.ux4g-label-l-default {
+    font-size: 15px;
+    line-height: 1.5;
+
+    font-weight: 600;
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .ux4g-container {
+        padding: 0 16px;
+    }
+
+    .ux4g-navbar-wrap {
+        min-height: 68px;
+        gap: 15px;
+    }
+
+    .ux4g-navbar-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .ux4g-divider-vertical {
+        height: 34px;
+    }
+
+    .ux4g-inline-gap-s {
+        gap: 9px;
+    }
+
+    .ux4g-label-m-strong {
+        font-size: 14px;
+    }
+
+    .ux4g-body-xs-default {
+        font-size: 10px;
+    }
+
+    .ux4g-label-l-default {
+        font-size: 13px;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   SMALL MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+    .ux4g-container {
+        padding: 0 12px;
+    }
+
+    .ux4g-navbar-wrap {
+        min-height: 62px;
+    }
+
+    .ux4g-navbar-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .ux4g-divider-vertical {
+        height: 30px;
+    }
+
+    .ux4g-label-m-strong {
+        font-size: 12px;
+    }
+
+    .ux4g-body-xs-default {
+        font-size: 9px;
+    }
+
+    .ux4g-label-l-default {
+        font-size: 12px;
+    }
+
+}
