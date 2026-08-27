@@ -3,40 +3,35 @@ import "../css/Header.css";
 
 function Header() {
     return (
-        <nav className="ux4g-navbar">
-            <div className="ux4g-container">
-                <div className="ux4g-navbar-wrap">
+        <nav className="ux4g-header">
+            <div className="ux4g-header-container">
+                <div className="ux4g-header-wrap">
 
                     {/* LEFT */}
-                    <div className="ux4g-d-flex ux4g-ai-center ux4g-inline-gap-s">
-
+                    <div className="ux4g-header-left">
                         <img
                             src={logo}
                             alt="Government Logo"
-                            className="ux4g-navbar-logo"
+                            className="ux4g-header-logo"
                         />
 
-                        <span className="ux4g-divider-vertical" />
+                        <span className="ux4g-header-divider" />
 
-                        <div className="ux4g-d-flex ux4g-flex-column">
-
-                            <span className="ux4g-label-m-strong">
+                        <div className="ux4g-header-title">
+                            <span className="ux4g-header-project">
                                 TEST PROJECT
                             </span>
 
-                            <span className="ux4g-body-xs-default">
+                            <span className="ux4g-header-department">
                                 Department Name
                             </span>
-
                         </div>
-
                     </div>
-
 
                     {/* RIGHT */}
                     <a
                         href="#"
-                        className="ux4g-label-l-default ux4g-text-link-md"
+                        className="ux4g-header-help"
                     >
                         Help &amp; Support
                     </a>

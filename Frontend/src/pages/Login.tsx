@@ -11,7 +11,7 @@ function Login() {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
-        captcha: "",
+        captcha: "AB3X9",
         otp: "",
     });
 

@@ -1,24 +1,50 @@
 /* =========================================================
    UX4G NAVBAR
+   Professional University / Government Theme
    ========================================================= */
 
 /* ---------------------------------------------------------
-   BASE NAVBAR
+   COLOR VARIABLES
    --------------------------------------------------------- */
+
+:root {
+    --navy: #123B5D;
+    --primary-blue: #1E5A88;
+    --secondary-blue: #2975A1;
+
+    --navbar-bg: #F3F8FC;
+    --white: #FFFFFF;
+
+    --hover-bg: #E3F0F8;
+    --active-bg: #1E5A88;
+
+    --text-primary: #1F2937;
+    --text-secondary: #64748B;
+
+    --border: #D8E3EB;
+
+    --success: #166534;
+    --danger: #B91C1C;
+}
+
+
+/* =========================================================
+   BASE NAVBAR
+   ========================================================= */
 
 .ux4g-navbar {
     width: 100%;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--border);
     box-sizing: border-box;
     position: relative;
     z-index: 1000;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    CONTAINER
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-container {
     width: 100%;
@@ -26,12 +52,13 @@
     margin: 0 auto;
     padding: 0 32px;
     box-sizing: border-box;
+    background: var(--white);
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    NAVBAR WRAPPER
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-navbar-wrap {
     min-height: 72px;
@@ -44,24 +71,51 @@
 }
 
 
-/* ---------------------------------------------------------
-   LOGO
-   --------------------------------------------------------- */
+/* =========================================================
+   NAVBAR LEFT
+   ========================================================= */
 
-.ux4g-navbar-logo {
-    height: 42px;
-    width: auto;
-
-    display: block;
-
-    object-fit: contain;
+.ux4g-navbar-left {
+    display: flex;
+    align-items: center;
     flex-shrink: 0;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
+   HOME
+   ========================================================= */
+
+.ux4g-navbar-home {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 40px;
+    padding: 8px 14px;
+
+    color: var(--navy);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border-radius: 6px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.ux4g-navbar-home:hover {
+    background: var(--hover-bg);
+    color: var(--primary-blue);
+}
+
+
+/* =========================================================
    NAVIGATION LIST
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-navbar-links {
     display: flex;
@@ -76,24 +130,28 @@
 }
 
 
-/* ---------------------------------------------------------
-   NAVIGATION LINKS
-   --------------------------------------------------------- */
+/* =========================================================
+   NAVIGATION LIST ITEM
+   ========================================================= */
 
 .ux4g-navbar-links li {
     margin: 0;
     padding: 0;
 }
 
+
+/* =========================================================
+   NAVIGATION LINKS
+   ========================================================= */
+
 .ux4g-navbar-links a {
     display: inline-flex;
     align-items: center;
 
     min-height: 40px;
-
     padding: 8px 14px;
 
-    color: #1f2937;
+    color: var(--text-primary);
 
     text-decoration: none;
 
@@ -107,26 +165,38 @@
         color 0.2s ease;
 }
 
+
+/* Hover */
+
 .ux4g-navbar-links a:hover {
-    background: #f1f5f9;
-    color: #075985;
+    background: var(--hover-bg);
+    color: var(--primary-blue);
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    ACTIVE / CURRENT LINK
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-navbar-links a.active {
-    background: #e0f2fe;
-    color: #075985;
+    background: var(--active-bg);
+    color: var(--white);
+
     font-weight: 600;
 }
 
 
-/* ---------------------------------------------------------
+/* Active hover */
+
+.ux4g-navbar-links a.active:hover {
+    background: var(--navy);
+    color: var(--white);
+}
+
+
+/* =========================================================
    RIGHT ALIGNED NAVBAR
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-navbar-right {
     margin-left: auto;
@@ -138,19 +208,25 @@
 }
 
 
-/* ---------------------------------------------------------
-   LOGIN BUTTON / LINK
-   --------------------------------------------------------- */
+/* =========================================================
+   LOGIN LINK
+   ========================================================= */
 
 .ux4g-navbar-links .login-link {
-    color: #075985;
+    color: var(--primary-blue);
+
     font-weight: 600;
 }
 
+.ux4g-navbar-links .login-link:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+}
 
-/* ---------------------------------------------------------
+
+/* =========================================================
    LOGOUT BUTTON
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-navbar-links .logout-btn {
     display: inline-flex;
@@ -158,14 +234,13 @@
     justify-content: center;
 
     min-height: 40px;
-
     padding: 8px 16px;
 
-    border: 1px solid #075985;
+    border: 1px solid var(--danger);
     border-radius: 6px;
 
-    background: #ffffff;
-    color: #075985;
+    background: var(--white);
+    color: var(--danger);
 
     font-family: inherit;
     font-size: 14px;
@@ -178,24 +253,27 @@
         color 0.2s ease;
 }
 
+
+/* Logout hover */
+
 .ux4g-navbar-links .logout-btn:hover {
-    background: #075985;
-    color: #ffffff;
+    background: var(--danger);
+    color: var(--white);
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    PILL SHAPED
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-radius-full {
     border-radius: 9999px !important;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    VERTICAL DIVIDER
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-divider-vertical {
     width: 1px;
@@ -203,15 +281,15 @@
 
     display: inline-block;
 
-    background: #d1d5db;
+    background: var(--border);
 
     flex-shrink: 0;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    HORIZONTAL DIVIDER
-   --------------------------------------------------------- */
+   ========================================================= */
 
 .ux4g-divider-horizontal {
     width: 100%;
@@ -219,15 +297,15 @@
 
     display: block;
 
-    background: #e5e7eb;
+    background: var(--border);
 
     margin: 0;
 }
 
 
-/* ---------------------------------------------------------
-   NAVBAR MOBILE MENU
-   --------------------------------------------------------- */
+/* =========================================================
+   MOBILE MENU TOGGLE
+   ========================================================= */
 
 .ux4g-navbar-mobile-toggle {
     display: none;
@@ -238,10 +316,10 @@
     align-items: center;
     justify-content: center;
 
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border);
     border-radius: 6px;
 
-    background: #ffffff;
+    background: var(--white);
 
     cursor: pointer;
 }
@@ -270,10 +348,6 @@
         padding: 8px 10px;
         font-size: 13px;
     }
-
-    .ux4g-navbar-logo {
-        height: 38px;
-    }
 }
 
 
@@ -290,15 +364,6 @@
     .ux4g-navbar-wrap {
         min-height: 64px;
     }
-
-    .ux4g-navbar-logo {
-        height: 36px;
-    }
-
-    /*
-       Navigation links become scrollable on smaller screens
-       instead of overflowing the page.
-    */
 
     .ux4g-navbar-links {
         max-width: 100%;
@@ -324,7 +389,7 @@
 
 
 /* =========================================================
-   RESPONSIVE - SMALL MOBILE
+   SMALL MOBILE
    ========================================================= */
 
 @media (max-width: 480px) {
@@ -336,10 +401,6 @@
     .ux4g-navbar-wrap {
         min-height: 60px;
         gap: 10px;
-    }
-
-    .ux4g-navbar-logo {
-        height: 32px;
     }
 
     .ux4g-navbar-links {
@@ -361,40 +422,4 @@
     .ux4g-divider-vertical {
         height: 26px;
     }
-    /* =========================================================
-   NAVBAR LEFT
-   ========================================================= */
-
-.ux4g-navbar-left {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-}
-
-.ux4g-navbar-home {
-    display: inline-flex;
-    align-items: center;
-
-    min-height: 40px;
-
-    padding: 8px 14px;
-
-    color: #1f2937;
-
-    text-decoration: none;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    border-radius: 6px;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
-}
-
-.ux4g-navbar-home:hover {
-    background: #f1f5f9;
-    color: #075985;
-}
 }

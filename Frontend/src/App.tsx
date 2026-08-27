@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import FooterLogin from "./components/FooterLogin";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -8,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import {
   Routes,
   Route,
+  useLocation,
 } from "react-router-dom";
 
 
@@ -16,16 +18,26 @@ import ApplicationPending from "./pages/ApplicationPending";
 import WorkflowApplication from "./pages/ApplicationWorkflow";
 
 import EServices from "./pages/EServices";
-    import HousingPage from "./pages/PageHousing";
- import BoilerPage from "./pages/PageBoiler";
+import HousingPage from "./pages/PageHousing";
+import BoilerPage from "./pages/PageBoiler";
 
- import ApplicationEdit from "./pages/ApplicationEdit";
- import ApplicationView from "./pages/ApplicationView";
+import ApplicationEdit from "./pages/ApplicationEdit";
+import ApplicationView from "./pages/ApplicationView";
 
- import ApplicationStatus from "./pages/ApplicationStatus";
-import WorkflowApplicationHistory
-    from "./pages/ApplicationHistory";
+import ApplicationStatus from "./pages/ApplicationStatus";
+import WorkflowApplicationHistory from "./pages/ApplicationHistory";
+
 function App() {
+const location = useLocation();
+
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+
+  const isAuthPage =
+    location.pathname === "/login" ||
+    location.pathname === "/registration";
+
+
   return (
     <div>
       <Header />
@@ -101,9 +113,15 @@ element={<BoilerPage/>}
 />     
 
         </Routes>
+         {/* Footer selection */}
+        {!isLoggedIn && isAuthPage ? (
+          <Footer />
+        ) : (
+          <FooterLogin />
+        )}
       </main>
 
-      <Footer />
+      
 
     </div>
   );
